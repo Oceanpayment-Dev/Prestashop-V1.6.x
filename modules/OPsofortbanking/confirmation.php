@@ -7,7 +7,7 @@ include_once(dirname(__FILE__).'/../../config/config.inc.php');
 include_once(dirname(__FILE__).'/../../header.php');
 
 //响应代码模式
-$code_mode = Configuration :: get('OP_ITRANSFER_CODE');
+$code_mode = Configuration :: get('OP_SOFORTBANKING_CODE');
 //响应代码
 $ErrorCode = $_POST["ErrorCode"];
 //返回网站订单号

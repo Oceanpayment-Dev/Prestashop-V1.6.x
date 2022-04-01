@@ -35,7 +35,7 @@ $order_notes = $_POST["order_notes"];
 $back_signValue = $_POST["signValue"];
 
 //securecode
-$securecode = Configuration :: get('OP_ITRANSFER_SECURECODE');
+$securecode = Configuration :: get('OP_SOFORTBANKING_SECURECODE');
 //校验源字符串
 $local_signValue = hash("sha256",$account.$terminal.$order_number.$order_currency.$order_amount.$order_notes.$card_number.
 		$payment_id.$payment_authType.$payment_status.$payment_details.$payment_risk.$securecode);
@@ -98,16 +98,16 @@ if(strtoupper($local_signValue) == strtoupper($back_signValue)){
 	}else{	
 		if($payment_status == 1 ){
 			//支付成功
-			$new_history->changeIdOrderState((int)Configuration :: get('OP_ITRANSFER_SUCCEED_STATES'), $order_number);	
+			$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_SUCCEED_STATES'), $order_number);	
 			$new_history->addWithemail(true);
 		}else{
 			//支付失败
-			$new_history->changeIdOrderState((int)Configuration :: get('OP_ITRANSFER_FAIL_STATES'), $order_number);
+			$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_FAIL_STATES'), $order_number);
 		}		
 	}
 	
 }else{  //数据签名对比失败
-	$new_history->changeIdOrderState((int)Configuration :: get('OP_ITRANSFER_FAIL_STATES'), $order_number);
+	$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_FAIL_STATES'), $order_number);
 }
 
 
@@ -117,5 +117,5 @@ $smarty->assign(array(
 		'order_number' => $order_number,
 		'payment_status'=>$payment_status,
 		'payment_details'=>$payment_details,
-		'this_path_ssl' => Tools::getHttpHost(true, true).__PS_BASE_URI__.'modules/OPinstanttransfer/'));
+		'this_path_ssl' => Tools::getHttpHost(true, true).__PS_BASE_URI__.'modules/OPsofortbanking/'));
 $smarty->display(dirname(__FILE__).'/payment_result.tpl');

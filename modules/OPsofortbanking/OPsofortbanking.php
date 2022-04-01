@@ -1,18 +1,18 @@
 <?php
-class OPinstanttransfer extends PaymentModule {
+class OPsofortbanking extends PaymentModule {
 	private $_html = '';
 	private $_postErrors = array ();
 
 	public function __construct() {
-		$this->name = 'OPinstanttransfer';
+		$this->name = 'OPsofortbanking';
 		//标记模块类型
 		$this->tab = 'payments_gateways';
 		$this->version = '1.7.1';
         
-		if (!Configuration::get('OP_ITRANSFER_ORDER_STATE'))				//If, for some reason, there are no currencies, make them
+		if (!Configuration::get('OP_SOFORTBANKING_ORDER_STATE'))				//If, for some reason, there are no currencies, make them
 			$this->_makeOrderState();
 
-        $this->idOrderState = Configuration::get('OP_ITRANSFER_ORDER_STATE');
+        $this->idOrderState = Configuration::get('OP_SOFORTBANKING_ORDER_STATE');
 
 		$this->currencies     = true;
 		$this->currencies_mode = 'radio';
@@ -20,14 +20,14 @@ class OPinstanttransfer extends PaymentModule {
 		parent :: __construct();
 
 		$this->page = basename(__FILE__, '.php');
-		$this->displayName = $this->l('Oceanpayment - InstantTransfer');
+		$this->displayName = $this->l('Oceanpayment - Sofortbanking');
 		$this->description = $this->l('Accepts payments by Oceanpayment');
 		$this->confirmUninstall = $this->l('Are you sure you want to delete your details ?');
 	}
 
 	public function getOceanpaymentUrl() {
-		$OP_ITRANSFER_url = "https://secure.oceanpayment.com/gateway/service/test";
-		return $OP_ITRANSFER_url;
+		$OP_SOFORTBANKING_url = "https://secure.oceanpayment.com/gateway/service/test";
+		return $OP_SOFORTBANKING_url;
 	}
 
 	/**
@@ -37,10 +37,10 @@ class OPinstanttransfer extends PaymentModule {
 		//支付地址(正式)
         $this->_makeOrderState();
 		$action_URL="https://secure.oceanpayment.com/gateway/service/test";
-		$back_url='http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPinstanttransfer/payment_result.php';
+		$back_url='http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPsofortbanking/payment_result.php';
 
-		if (!Configuration :: updateValue('OP_ITRANSFER_SUCCEED_STATES', '2') OR !Configuration :: updateValue('OP_ITRANSFER_FAIL_STATES', '6') OR !parent :: install() OR !Configuration :: updateValue('OP_ITRANSFER_ACCOUNT', '') OR !Configuration :: updateValue('OP_ITRANSFER_SECURECODE', '') 
-		 OR !Configuration :: updateValue('OP_ITRANSFER_HANDLER', $action_URL) OR !Configuration :: updateValue('OP_ITRANSFER_BACK_URL', $back_url) OR !$this->registerHook('payment') OR !$this->registerHook('paymentReturn'))
+		if (!Configuration :: updateValue('OP_SOFORTBANKING_SUCCEED_STATES', '2') OR !Configuration :: updateValue('OP_SOFORTBANKING_FAIL_STATES', '6') OR !parent :: install() OR !Configuration :: updateValue('OP_SOFORTBANKING_ACCOUNT', '') OR !Configuration :: updateValue('OP_SOFORTBANKING_SECURECODE', '') 
+		 OR !Configuration :: updateValue('OP_SOFORTBANKING_HANDLER', $action_URL) OR !Configuration :: updateValue('OP_SOFORTBANKING_BACK_URL', $back_url) OR !$this->registerHook('payment') OR !$this->registerHook('paymentReturn'))
 			return false;
 		return true;
 	}
@@ -49,8 +49,8 @@ class OPinstanttransfer extends PaymentModule {
 	 * 卸载
 	 */
 	public function uninstall() {
-		if (!Configuration :: deleteByName('OP_ITRANSFER_SUCCEED_STATES') OR !Configuration :: deleteByName('OP_ITRANSFER_FAIL_STATES') OR !Configuration :: deleteByName('OP_ITRANSFER_ACCOUNT') OR !Configuration :: deleteByName('OP_ITRANSFER_SECURECODE') OR !Configuration :: deleteByName('OP_ITRANSFER_TERMINAL') 
-		 OR !Configuration :: deleteByName('OP_ITRANSFER_HANDLER') OR !Configuration :: deleteByName('OP_ITRANSFER_BACK_URL') OR !parent :: uninstall())
+		if (!Configuration :: deleteByName('OP_SOFORTBANKING_SUCCEED_STATES') OR !Configuration :: deleteByName('OP_SOFORTBANKING_FAIL_STATES') OR !Configuration :: deleteByName('OP_SOFORTBANKING_ACCOUNT') OR !Configuration :: deleteByName('OP_SOFORTBANKING_SECURECODE') OR !Configuration :: deleteByName('OP_SOFORTBANKING_TERMINAL') 
+		 OR !Configuration :: deleteByName('OP_SOFORTBANKING_HANDLER') OR !Configuration :: deleteByName('OP_SOFORTBANKING_BACK_URL') OR !parent :: uninstall())
 			return false;
 		return true;
 	}
@@ -71,13 +71,13 @@ class OPinstanttransfer extends PaymentModule {
 			if (!sizeof($this->_postErrors)) {
 
 				//执行修改操作
-				Configuration :: updateValue('OP_ITRANSFER_ACCOUNT', strval($_POST['account']));
-				Configuration :: updateValue('OP_ITRANSFER_SECURECODE', strval($_POST['securecode']));
-				Configuration :: updateValue('OP_ITRANSFER_TERMINAL', strval($_POST['terminal']));
-				Configuration :: updateValue('OP_ITRANSFER_SUCCEED_STATES', strval($_POST['succeed_states']));
-				Configuration :: updateValue('OP_ITRANSFER_FAIL_STATES', strval($_POST['fail_states']));
-				Configuration :: updateValue('OP_ITRANSFER_HANDLER', strval($_POST['handler']));
-				Configuration :: updateValue('OP_ITRANSFER_BACK_URL', strval($_POST['backurl']));
+				Configuration :: updateValue('OP_SOFORTBANKING_ACCOUNT', strval($_POST['account']));
+				Configuration :: updateValue('OP_SOFORTBANKING_SECURECODE', strval($_POST['securecode']));
+				Configuration :: updateValue('OP_SOFORTBANKING_TERMINAL', strval($_POST['terminal']));
+				Configuration :: updateValue('OP_SOFORTBANKING_SUCCEED_STATES', strval($_POST['succeed_states']));
+				Configuration :: updateValue('OP_SOFORTBANKING_FAIL_STATES', strval($_POST['fail_states']));
+				Configuration :: updateValue('OP_SOFORTBANKING_HANDLER', strval($_POST['handler']));
+				Configuration :: updateValue('OP_SOFORTBANKING_BACK_URL', strval($_POST['backurl']));
 				$this->displayConf();
 			} else
 				$this->displayErrors();
@@ -95,7 +95,7 @@ class OPinstanttransfer extends PaymentModule {
 	*/
 	private function _makeOrderState()
 	{
-		if(!(Configuration::get('OP_ITRANSFER_ORDER_STATE') > 0))
+		if(!(Configuration::get('OP_SOFORTBANKING_ORDER_STATE') > 0))
 		{
 			$os = new OrderState();
 			$os->name = array_fill(0,10,"Awaiting Payment");	//Fill with english language translation
@@ -106,7 +106,7 @@ class OPinstanttransfer extends PaymentModule {
 			$os->unremovable = false;
 			$os->logable = 0;
 			$os->add();
-			Configuration::updateValue('OP_ITRANSFER_ORDER_STATE',$os->id);
+			Configuration::updateValue('OP_SOFORTBANKING_ORDER_STATE',$os->id);
 		}
 	}
 
@@ -128,7 +128,7 @@ class OPinstanttransfer extends PaymentModule {
 
 	//设置显示logo及提示信息
 	public function displayOceanpayment() {
-		$this->_html .= '<img src="../modules/OPinstanttransfer/payment.jpg" style="float:left; margin-right:15px;height:80px" /><b>'
+		$this->_html .= '<img src="../modules/OPsofortbanking/payment.jpg" style="float:left; margin-right:15px;height:80px" /><b>'
 		. $this->l('This module allows you to accept payments by Oceanpayment.')
 		. '</b><br /><br />'
 		. $this->l('If the client chooses this payment mode, your Oceanpayment account will be automatically credited.')
@@ -140,21 +140,21 @@ class OPinstanttransfer extends PaymentModule {
 	public function displayFormSettings() {
 		global $cookie;
 		$conf = Configuration :: getMultiple(array (
-			'OP_ITRANSFER_ACCOUNT',
-			'OP_ITRANSFER_SECURECODE',
-			'OP_ITRANSFER_TERMINAL',
-			'OP_ITRANSFER_SUCCEED_STATES',
-			'OP_ITRANSFER_FAIL_STATES',
-			'OP_ITRANSFER_HANDLER',
-			'OP_ITRANSFER_BACK_URL'
+			'OP_SOFORTBANKING_ACCOUNT',
+			'OP_SOFORTBANKING_SECURECODE',
+			'OP_SOFORTBANKING_TERMINAL',
+			'OP_SOFORTBANKING_SUCCEED_STATES',
+			'OP_SOFORTBANKING_FAIL_STATES',
+			'OP_SOFORTBANKING_HANDLER',
+			'OP_SOFORTBANKING_BACK_URL'
 		));
-		$account = array_key_exists('account', $_POST) ? $_POST['account'] : (array_key_exists('OP_ITRANSFER_ACCOUNT', $conf) ? $conf['OP_ITRANSFER_ACCOUNT'] : '');
-		$securecode = array_key_exists('securecode', $_POST) ? $_POST['securecode'] : (array_key_exists('OP_ITRANSFER_SECURECODE', $conf) ? $conf['OP_ITRANSFER_SECURECODE'] : '');
-		$terminal = array_key_exists('terminal', $_POST) ? $_POST['terminal'] : (array_key_exists('OP_ITRANSFER_TERMINAL', $conf) ? $conf['OP_ITRANSFER_TERMINAL'] : '');
-		$succeed_states = array_key_exists('succeed_states', $_POST) ? $_POST['succeed_states'] : (array_key_exists('OP_ITRANSFER_SUCCEED_STATES', $conf) ? $conf['OP_ITRANSFER_SUCCEED_STATES'] :2);
-		$fail_states = array_key_exists('fail_states', $_POST) ? $_POST['fail_states'] : (array_key_exists('OP_ITRANSFER_FAIL_STATES', $conf) ? $conf['OP_ITRANSFER_FAIL_STATES'] :6);
-		$handler = array_key_exists('handler', $_POST) ? $_POST['handler'] : (array_key_exists('OP_ITRANSFER_HANDLER', $conf) ? $conf['OP_ITRANSFER_HANDLER'] : '');
-		$backurl = array_key_exists('backurl', $_POST) ? $_POST['backurl'] : (array_key_exists('OP_ITRANSFER_BACK_URL', $conf) ? $conf['OP_ITRANSFER_BACK_URL'] : '');
+		$account = array_key_exists('account', $_POST) ? $_POST['account'] : (array_key_exists('OP_SOFORTBANKING_ACCOUNT', $conf) ? $conf['OP_SOFORTBANKING_ACCOUNT'] : '');
+		$securecode = array_key_exists('securecode', $_POST) ? $_POST['securecode'] : (array_key_exists('OP_SOFORTBANKING_SECURECODE', $conf) ? $conf['OP_SOFORTBANKING_SECURECODE'] : '');
+		$terminal = array_key_exists('terminal', $_POST) ? $_POST['terminal'] : (array_key_exists('OP_SOFORTBANKING_TERMINAL', $conf) ? $conf['OP_SOFORTBANKING_TERMINAL'] : '');
+		$succeed_states = array_key_exists('succeed_states', $_POST) ? $_POST['succeed_states'] : (array_key_exists('OP_SOFORTBANKING_SUCCEED_STATES', $conf) ? $conf['OP_SOFORTBANKING_SUCCEED_STATES'] :2);
+		$fail_states = array_key_exists('fail_states', $_POST) ? $_POST['fail_states'] : (array_key_exists('OP_SOFORTBANKING_FAIL_STATES', $conf) ? $conf['OP_SOFORTBANKING_FAIL_STATES'] :6);
+		$handler = array_key_exists('handler', $_POST) ? $_POST['handler'] : (array_key_exists('OP_SOFORTBANKING_HANDLER', $conf) ? $conf['OP_SOFORTBANKING_HANDLER'] : '');
+		$backurl = array_key_exists('backurl', $_POST) ? $_POST['backurl'] : (array_key_exists('OP_SOFORTBANKING_BACK_URL', $conf) ? $conf['OP_SOFORTBANKING_BACK_URL'] : '');
 
 		$statesArray = array();
 		$states = OrderState::getOrderStates((int)($cookie->id_lang));
@@ -211,13 +211,13 @@ class OPinstanttransfer extends PaymentModule {
 		$currency=$this->getCurrency();
 // 		$Amount = floatval(Tools::convertPrice(floatval(number_format($cart->getOrderTotal(true, 3), 2, '.', '')), $currency));
 // 		$currency = new Currency($cart->id_currency);
-		$this->validateOrder($cart->id, Configuration::get('OP_ITRANSFER_ORDER_STATE'), $cart->getOrderTotal(),$this->displayName);
+		$this->validateOrder($cart->id, Configuration::get('OP_SOFORTBANKING_ORDER_STATE'), $cart->getOrderTotal(),$this->displayName);
 		//securecode密匙
-		$securecode = Configuration :: get('OP_ITRANSFER_SECURECODE');
+		$securecode = Configuration :: get('OP_SOFORTBANKING_SECURECODE');
 		//账户
-		$account = Configuration :: get('OP_ITRANSFER_ACCOUNT');
+		$account = Configuration :: get('OP_SOFORTBANKING_ACCOUNT');
 		//终端号
-		$terminal = Configuration :: get('OP_ITRANSFER_TERMINAL');
+		$terminal = Configuration :: get('OP_SOFORTBANKING_TERMINAL');
 		//交易金额
 		$order_amount = $cart->getOrderTotal();
         //商户订单号
@@ -225,24 +225,24 @@ class OPinstanttransfer extends PaymentModule {
 		//交易币种
         $order_currency = $currency->iso_code;
         //交易返回地址
-        $backUrl = Configuration :: get('OP_ITRANSFER_BACK_URL');
+        $backUrl = Configuration :: get('OP_SOFORTBANKING_BACK_URL');
         //服务器响应地址
-        $noticeUrl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPinstanttransfer/payment_notice.php';
+        $noticeUrl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPsofortbanking/payment_notice.php';
         //备注
         $order_notes = '';
         //提交地址
-		$handler = Configuration :: get('OP_ITRANSFER_HANDLER');
+		$handler = Configuration :: get('OP_SOFORTBANKING_HANDLER');
 
 		$shippingAddress=new Address(intval($cart->id_address_delivery));
 		$customer = new Customer(intval($cart->id_customer));
 		//支付方式
-		$methods = 'InstantTransfer';
+		$methods = 'Directpay';
 		//客人的名
 		$billing_firstName = empty ($shippingAddress->firstname) ? '' : $this->OceanHtmlSpecialChars($shippingAddress->firstname);
 		//客人的姓
 		$billing_lastName = empty ($shippingAddress->lastname) ? '' : $this->OceanHtmlSpecialChars($shippingAddress->lastname);
 		//客人的邮件
-		$billing_email = empty ($customer->email) ? '' : $this->OceanHtmlSpecialChars($customer->email);
+		$billing_email = empty ($customer->email) ? '' : $customer->email;
 		//客人的联系电话
 		$billing_phone = empty ($shippingAddress->phone_mobile) ? $shippingAddress->phone : $shippingAddress->phone_mobile;
 		//客人的邮编
@@ -354,13 +354,13 @@ class OPinstanttransfer extends PaymentModule {
 
 		global $smarty;
 
-		$this_path_ssl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'modules/OPinstanttransfer/';
+		$this_path_ssl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'modules/OPsofortbanking/';
 
 		$smarty->assign(array (
 			'this_path_ssl' => $this_path_ssl
 		));
 
-		return $this->display(__FILE__, 'InstantTransfer.tpl');
+		return $this->display(__FILE__, 'Sofortbanking.tpl');
 	}
 
 	public function hookPaymentReturn($params) {
@@ -410,4 +410,5 @@ class OPinstanttransfer extends PaymentModule {
 		return $parameter;
 	
 	}
+	
 }

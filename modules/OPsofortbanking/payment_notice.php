@@ -32,7 +32,7 @@ if(xml_parser($xml_str)){
 	$_REQUEST['payment_solutions']= (string)$xml->payment_solutions;
 
 	//securecode
-	$securecode = Configuration :: get('OP_ITRANSFER_SECURECODE');
+	$securecode = Configuration :: get('OP_SOFORTBANKING_SECURECODE');
 		
 }
 
@@ -89,21 +89,21 @@ if($_REQUEST['response_type'] == 1){
 		}else{
 			if($_REQUEST['payment_status'] == 1 ){
 				//支付成功
-				$new_history->changeIdOrderState((int)Configuration :: get('OP_ITRANSFER_SUCCEED_STATES'), $_REQUEST['order_number']);
+				$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_SUCCEED_STATES'), $_REQUEST['order_number']);
 				$new_history->addWithemail(true);
 					
 			}elseif ($_REQUEST['payment_status'] == -1 ){
 				//交易待处理
 				//是否预授权交易
 				if($_REQUEST['payment_authType'] == 1){
-					$new_history->changeIdOrderState((int)Configuration :: get('OP_ITRANSFER_SUCCEED_STATES'), $_REQUEST['order_number']);
+					$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_SUCCEED_STATES'), $_REQUEST['order_number']);
 					$new_history->addWithemail(true);
 				}else{
-					$new_history->changeIdOrderState((int)Configuration :: get('OP_ITRANSFER_PENDING_STATES'), $_REQUEST['order_number']);
+					$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_PENDING_STATES'), $_REQUEST['order_number']);
 				}
 			}else{
 				//支付失败
-				$new_history->changeIdOrderState((int)Configuration :: get('OP_ITRANSFER_FAIL_STATES'), $_REQUEST['order_number']);
+				$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_FAIL_STATES'), $_REQUEST['order_number']);
 			}
 		}
 		
