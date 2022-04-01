@@ -39,13 +39,12 @@ function oceanpayment_commit(){
 	<input type="hidden" name="ship_country" value="{$ship_country}" />
 	<input type="hidden" name="ship_state" value="{$ship_state}" />
 	<input type="hidden" name="ship_city" value="{$ship_city}" />
-	<input type="hidden" name="ship_addr" value="{$ship_addr}" />
+	<input type="hidden" name="ship_address" value="{$ship_address}" />
 	<input type="hidden" name="ship_zip" value="{$ship_zip}" />
 	<input type="hidden" name="order_notes" value="{$order_notes}" />
 	<input type="hidden" name="productName" value="{$productName}" />
 	<input type="hidden" name="productSku" value="{$productSku}" />
 	<input type="hidden" name="productNum" value="{$productNum}" />
-	<input type="hidden" name="itemList" value='{$itemList}' />
 	<input type="hidden" name="cart_info" value="{$cart_info}" />
 	<input type="hidden" name="cart_api" value="{$cart_api}" />
 	<input type="hidden" name="pages" value="{$pages}" />

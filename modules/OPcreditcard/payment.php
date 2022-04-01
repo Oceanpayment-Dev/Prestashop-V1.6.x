@@ -4,30 +4,28 @@ $useSSL = true;
 include(dirname(__FILE__).'/../../config/config.inc.php');
 header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"');
 require_once(dirname(__FILE__).'/../../init.php');
-include(dirname(__FILE__).'/Klarna.php');
+include(dirname(__FILE__).'/OPcreditcard.php');
 
 if (!$cookie->isLogged(true))
     Tools::redirect('authentication.php?back=order.php');
-
 
 if(empty($cart->id))
 	Tools::redirect('history.php');
 
 
 //生成form表单
-$Klarna = new Klarna();
+$OPcreditcard = new OPcreditcard();
 
 //支付模式
-$pay_mode = Configuration :: get('OP_KLARNA_PAY_MODE');
+$pay_mode = Configuration :: get('OP_CREDITCARD_PAY_MODE');
 
 
 if($pay_mode == 1){
-	
 	//内嵌
-	$Klarna->execPayment($cart);
+	$OPcreditcard->execPayment($cart);
 }elseif($pay_mode == 0){
 	//跳转
-	echo $Klarna->execPayment($cart);
+	echo $OPcreditcard->execPayment($cart);
 	exit;
 }
 
@@ -48,7 +46,7 @@ $smarty->assign(array(
 		'static_token' => Tools::getToken(false),
 		'token' => Tools::getToken(),
 		'priceDisplayPrecision' => _PS_PRICE_DISPLAY_PRECISION_,
-		'this_path_ssl' => Tools::getHttpHost(true, true).__PS_BASE_URI__.'modules/Klarna/',
+		'this_path_ssl' => Tools::getHttpHost(true, true).__PS_BASE_URI__.'modules/OPcreditcard/',
 ));
 
 

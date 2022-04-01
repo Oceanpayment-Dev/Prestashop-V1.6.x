@@ -1,32 +1,32 @@
 <?php
-class Klarna extends PaymentModule {
+class OPcreditcard extends PaymentModule {
 	private $_html = '';
 	private $_postErrors = array ();
 
 	public function __construct() {
-		$this->name = 'Klarna';
+		$this->name = 'OPcreditcard';
 		//标记模块类型
 		$this->tab = 'payments_gateways';
-		$this->version = '1.6.1';
+		$this->version = '1.7.1';
         
-		if (!Configuration::get('OP_KLARNA_ORDER_STATE'))				//If, for some reason, there are no currencies, make them
+		if (!Configuration::get('OP_CREDITCARD_ORDER_STATE'))				//If, for some reason, there are no currencies, make them
 			$this->_makeOrderState();
 
-        $this->idOrderState = Configuration::get('OP_KLARNA_ORDER_STATE');
+        $this->idOrderState = Configuration::get('OP_CREDITCARD_ORDER_STATE');
 		$this->currencies     = true;
 		$this->currencies_mode = 'radio';
 
 		parent::__construct();
 
 		$this->page = basename(__FILE__, '.php');
-		$this->displayName = $this->l('Oceanpayment - Klarna');
+		$this->displayName = $this->l('Oceanpayment - CreditCard');
 		$this->description = $this->l('Accepts payments by Oceanpayment');
 		$this->confirmUninstall = $this->l('Are you sure you want to delete your details ?');
 	}
 
 	public function getOceanpaymentUrl() {
-		$OP_KLARNA_url = "https://secure.oceanpayment.com/gateway/service/pay";
-		return $OP_KLARNA_url;
+		$OP_CREDITCARD_url = "https://secure.oceanpayment.com/gateway/service/test";
+		return $OP_CREDITCARD_url;
 	}
 
 	/**
@@ -35,23 +35,23 @@ class Klarna extends PaymentModule {
 	public function install() {
 		//支付地址(正式)
         $this->_makeOrderState();
-		$action_URL="https://secure.oceanpayment.com/gateway/service/pay";
-		$back_url='http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/Klarna/payment_result.php';
+		$action_URL="https://secure.oceanpayment.com/gateway/service/test";
+		$back_url='http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPcreditcard/payment_result.php';
 
-		if (!Configuration :: updateValue('OP_KLARNA_SUCCEED_STATES', '2') OR
-			!Configuration :: updateValue('OP_KLARNA_FAIL_STATES', '6') OR 
-			!Configuration :: updateValue('OP_KLARNA_PENDING_STATES', '2') OR 	
-			!Configuration :: updateValue('OP_KLARNA_ACCOUNT', '') OR 
-			!Configuration :: updateValue('OP_KLARNA_TERMINAL', '') OR
-			!Configuration :: updateValue('OP_KLARNA_SECURECODE', '') OR
-			!Configuration :: updateValue('OP_KLARNA_PAY_MODE', '1') OR 
-			!Configuration :: updateValue('OP_KLARNA_SECURE_MODE', '0') OR 
-			!Configuration :: updateValue('OP_KLARNA_SECURE_TERMINAL', '') OR
-			!Configuration :: updateValue('OP_KLARNA_SECURE_SECURECODE', '') OR
-			!Configuration :: updateValue('OP_KLARNA_SECURE_CURRENCY', '') OR
-			!Configuration :: updateValue('OP_KLARNA_SECURE_AMOUNT', '') OR
-			!Configuration :: updateValue('OP_KLARNA_HANDLER', $action_URL) OR 
-			!Configuration :: updateValue('OP_KLARNA_BACK_URL', $back_url) OR 
+		if (!Configuration :: updateValue('OP_CREDITCARD_SUCCEED_STATES', '2') OR
+			!Configuration :: updateValue('OP_CREDITCARD_FAIL_STATES', '6') OR 
+			!Configuration :: updateValue('OP_CREDITCARD_PENDING_STATES', '2') OR 	
+			!Configuration :: updateValue('OP_CREDITCARD_ACCOUNT', '') OR 
+			!Configuration :: updateValue('OP_CREDITCARD_TERMINAL', '') OR
+			!Configuration :: updateValue('OP_CREDITCARD_SECURECODE', '') OR
+			!Configuration :: updateValue('OP_CREDITCARD_PAY_MODE', '1') OR 
+			!Configuration :: updateValue('OP_CREDITCARD_SECURE_MODE', '0') OR 
+			!Configuration :: updateValue('OP_CREDITCARD_SECURE_TERMINAL', '') OR
+			!Configuration :: updateValue('OP_CREDITCARD_SECURE_SECURECODE', '') OR
+			!Configuration :: updateValue('OP_CREDITCARD_SECURE_CURRENCY', '') OR
+			!Configuration :: updateValue('OP_CREDITCARD_SECURE_AMOUNT', '') OR
+			!Configuration :: updateValue('OP_CREDITCARD_HANDLER', $action_URL) OR 
+			!Configuration :: updateValue('OP_CREDITCARD_BACK_URL', $back_url) OR 
 			!parent :: install() OR
 			!$this->registerHook('payment') OR 
 			!$this->registerHook('paymentReturn'))
@@ -63,20 +63,20 @@ class Klarna extends PaymentModule {
 	 * 卸载
 	 */
 	public function uninstall() {
-		if (!Configuration :: deleteByName('OP_KLARNA_SUCCEED_STATES') OR 
-			!Configuration :: deleteByName('OP_KLARNA_FAIL_STATES') OR 
-			!Configuration :: deleteByName('OP_KLARNA_PENDING_STATES') OR 
-			!Configuration :: deleteByName('OP_KLARNA_ACCOUNT') OR 
-			!Configuration :: deleteByName('OP_KLARNA_TERMINAL') OR
-			!Configuration :: deleteByName('OP_KLARNA_SECURECODE') OR
-		 	!Configuration :: deleteByName('OP_KLARNA_PAY_MODE') OR 
-			!Configuration :: deleteByName('OP_KLARNA_SECURE_MODE') OR 
-			!Configuration :: deleteByName('OP_KLARNA_SECURE_TERMINA') OR
-			!Configuration :: deleteByName('OP_KLARNA_SECURE_SECURECODE') OR
-			!Configuration :: deleteByName('OP_KLARNA_SECURE_CURRENCY') OR
-			!Configuration :: deleteByName('OP_KLARNA_SECURE_AMOUNT') OR
-			!Configuration :: deleteByName('OP_KLARNA_HANDLER') OR 
-			!Configuration :: deleteByName('OP_KLARNA_BACK_URL') OR 
+		if (!Configuration :: deleteByName('OP_CREDITCARD_SUCCEED_STATES') OR 
+			!Configuration :: deleteByName('OP_CREDITCARD_FAIL_STATES') OR 
+			!Configuration :: deleteByName('OP_CREDITCARD_PENDING_STATES') OR 
+			!Configuration :: deleteByName('OP_CREDITCARD_ACCOUNT') OR 
+			!Configuration :: deleteByName('OP_CREDITCARD_TERMINAL') OR
+			!Configuration :: deleteByName('OP_CREDITCARD_SECURECODE') OR
+		 	!Configuration :: deleteByName('OP_CREDITCARD_PAY_MODE') OR 
+			!Configuration :: deleteByName('OP_CREDITCARD_SECURE_MODE') OR 
+			!Configuration :: deleteByName('OP_CREDITCARD_SECURE_TERMINA') OR
+			!Configuration :: deleteByName('OP_CREDITCARD_SECURE_SECURECODE') OR
+			!Configuration :: deleteByName('OP_CREDITCARD_SECURE_CURRENCY') OR
+			!Configuration :: deleteByName('OP_CREDITCARD_SECURE_AMOUNT') OR
+			!Configuration :: deleteByName('OP_CREDITCARD_HANDLER') OR 
+			!Configuration :: deleteByName('OP_CREDITCARD_BACK_URL') OR 
 			!parent :: uninstall())
 			return false;
 		return true;
@@ -90,7 +90,7 @@ class Klarna extends PaymentModule {
 	 */
 	private function _makeOrderState()
 	{
-		if(!(Configuration::get('OP_KLARNA_ORDER_STATE') > 0))
+		if(!(Configuration::get('OP_CREDITCARD_ORDER_STATE') > 0))
 		{
 			$os = new OrderState();
 			$os->name = array_fill(0,10,"Awaiting Payment");	//Fill with english language translation
@@ -101,7 +101,7 @@ class Klarna extends PaymentModule {
 			$os->unremovable = false;
 			$os->logable = 0;
 			$os->add();
-			Configuration::updateValue('OP_KLARNA_ORDER_STATE',$os->id);
+			Configuration::updateValue('OP_CREDITCARD_ORDER_STATE',$os->id);
 		}
 	}
 	
@@ -138,20 +138,20 @@ class Klarna extends PaymentModule {
 
 			if (!sizeof($this->_postErrors)) {
 				//执行修改操作
-				Configuration :: updateValue('OP_KLARNA_ACCOUNT', strval($_POST['account']));
-				Configuration :: updateValue('OP_KLARNA_TERMINAL', strval($_POST['terminal']));
-				Configuration :: updateValue('OP_KLARNA_SECURECODE', strval($_POST['securecode']));
-				Configuration :: updateValue('OP_KLARNA_PAY_MODE', strval($_POST['pay_mode']));
-				Configuration :: updateValue('OP_KLARNA_SUCCEED_STATES', strval($_POST['succeed_states']));
-				Configuration :: updateValue('OP_KLARNA_FAIL_STATES', strval($_POST['fail_states']));
-				Configuration :: updateValue('OP_KLARNA_PENDING_STATES', strval($_POST['pending_states']));
-				Configuration :: updateValue('OP_KLARNA_SECURE_MODE', strval($_POST['secure_mode']));
-				Configuration :: updateValue('OP_KLARNA_SECURE_TERMINAL', strval($_POST['secure_terminal']));
-				Configuration :: updateValue('OP_KLARNA_SECURE_SECURECODE', strval($_POST['secure_securecode']));
-				Configuration :: updateValue('OP_KLARNA_SECURE_CURRENCY', strval($_POST['secure_currency']));
-				Configuration :: updateValue('OP_KLARNA_SECURE_AMOUNT', strval($_POST['secure_amount']));
-				Configuration :: updateValue('OP_KLARNA_HANDLER', strval($_POST['handler']));
-				Configuration :: updateValue('OP_KLARNA_BACK_URL', strval($_POST['backurl']));
+				Configuration :: updateValue('OP_CREDITCARD_ACCOUNT', strval($_POST['account']));
+				Configuration :: updateValue('OP_CREDITCARD_TERMINAL', strval($_POST['terminal']));
+				Configuration :: updateValue('OP_CREDITCARD_SECURECODE', strval($_POST['securecode']));
+				Configuration :: updateValue('OP_CREDITCARD_PAY_MODE', strval($_POST['pay_mode']));
+				Configuration :: updateValue('OP_CREDITCARD_SUCCEED_STATES', strval($_POST['succeed_states']));
+				Configuration :: updateValue('OP_CREDITCARD_FAIL_STATES', strval($_POST['fail_states']));
+				Configuration :: updateValue('OP_CREDITCARD_PENDING_STATES', strval($_POST['pending_states']));
+				Configuration :: updateValue('OP_CREDITCARD_SECURE_MODE', strval($_POST['secure_mode']));
+				Configuration :: updateValue('OP_CREDITCARD_SECURE_TERMINAL', strval($_POST['secure_terminal']));
+				Configuration :: updateValue('OP_CREDITCARD_SECURE_SECURECODE', strval($_POST['secure_securecode']));
+				Configuration :: updateValue('OP_CREDITCARD_SECURE_CURRENCY', strval($_POST['secure_currency']));
+				Configuration :: updateValue('OP_CREDITCARD_SECURE_AMOUNT', strval($_POST['secure_amount']));
+				Configuration :: updateValue('OP_CREDITCARD_HANDLER', strval($_POST['handler']));
+				Configuration :: updateValue('OP_CREDITCARD_BACK_URL', strval($_POST['backurl']));
 				$this->displayConf();
 			} else
 				$this->displayErrors();
@@ -166,7 +166,7 @@ class Klarna extends PaymentModule {
 
 	//设置显示logo及提示信息
 	public function displayOceanpayment() {
-		$this->_html .= '<img src="https://x.klarnacdn.net/payment-method/assets/badges/generic/klarna.svg" style="float:left; margin:10px 15px 10px 0;" /><b>'
+		$this->_html .= '<img src="../modules/OPcreditcard/op_creditcard.png" style="float:left; margin:10px 15px 10px 0;" /><b>'
 		. $this->l('This module allows you to accept payments by Oceanpayment.')
 		. '</b><br />'
 		. $this->l('If the client chooses this payment mode, your Oceanpayment account will be automatically credited.')
@@ -178,35 +178,35 @@ class Klarna extends PaymentModule {
 	public function displayFormSettings() {
 		global $cookie;
 		$conf = Configuration :: getMultiple(array (
-			'OP_KLARNA_ACCOUNT',
-			'OP_KLARNA_TERMINAL',
-			'OP_KLARNA_SECURECODE',
-			'OP_KLARNA_PAY_MODE',
-			'OP_KLARNA_SUCCEED_STATES',
-			'OP_KLARNA_FAIL_STATES',
-			'OP_KLARNA_PENDING_STATES',
-			'OP_KLARNA_SECURE_MODE',
-			'OP_KLARNA_SECURE_TERMINAL',
-			'OP_KLARNA_SECURE_SECURECODE',
-			'OP_KLARNA_SECURE_CURRENCY',
-			'OP_KLARNA_SECURE_AMOUNT',
-			'OP_KLARNA_HANDLER',
-			'OP_KLARNA_BACK_URL'
+			'OP_CREDITCARD_ACCOUNT',
+			'OP_CREDITCARD_TERMINAL',
+			'OP_CREDITCARD_SECURECODE',
+			'OP_CREDITCARD_PAY_MODE',
+			'OP_CREDITCARD_SUCCEED_STATES',
+			'OP_CREDITCARD_FAIL_STATES',
+			'OP_CREDITCARD_PENDING_STATES',
+			'OP_CREDITCARD_SECURE_MODE',
+			'OP_CREDITCARD_SECURE_TERMINAL',
+			'OP_CREDITCARD_SECURE_SECURECODE',
+			'OP_CREDITCARD_SECURE_CURRENCY',
+			'OP_CREDITCARD_SECURE_AMOUNT',
+			'OP_CREDITCARD_HANDLER',
+			'OP_CREDITCARD_BACK_URL'
 		));
-		$account = array_key_exists('account', $_POST) ? $_POST['account'] : (array_key_exists('OP_KLARNA_ACCOUNT', $conf) ? $conf['OP_KLARNA_ACCOUNT'] : '');
-		$securecode = array_key_exists('securecode', $_POST) ? $_POST['securecode'] : (array_key_exists('OP_KLARNA_SECURECODE', $conf) ? $conf['OP_KLARNA_SECURECODE'] : '');
-		$terminal = array_key_exists('terminal', $_POST) ? $_POST['terminal'] : (array_key_exists('OP_KLARNA_TERMINAL', $conf) ? $conf['OP_KLARNA_TERMINAL'] : '');
-		$pay_mode = array_key_exists('pay_mode', $_POST) ? $_POST['pay_mode'] : (array_key_exists('OP_KLARNA_PAY_MODE', $conf) ? $conf['OP_KLARNA_PAY_MODE'] : 1);
-		$succeed_states = array_key_exists('succeed_states', $_POST) ? $_POST['succeed_states'] : (array_key_exists('OP_KLARNA_SUCCEED_STATES', $conf) ? $conf['OP_KLARNA_SUCCEED_STATES'] :2);
-		$fail_states = array_key_exists('fail_states', $_POST) ? $_POST['fail_states'] : (array_key_exists('OP_KLARNA_FAIL_STATES', $conf) ? $conf['OP_KLARNA_FAIL_STATES'] :6);
-		$pending_states = array_key_exists('pending_states', $_POST) ? $_POST['pending_states'] : (array_key_exists('OP_KLARNA_PENDING_STATES', $conf) ? $conf['OP_KLARNA_PENDING_STATES'] :2);
-		$secure_mode = array_key_exists('secure_mode', $_POST) ? $_POST['secure_mode'] : (array_key_exists('OP_KLARNA_SECURE_MODE', $conf) ? $conf['OP_KLARNA_SECURE_MODE'] : 0);
-		$secure_terminal = array_key_exists('secure_terminal', $_POST) ? $_POST['secure_terminal'] : (array_key_exists('OP_KLARNA_SECURE_TERMINAL', $conf) ? $conf['OP_KLARNA_SECURE_TERMINAL'] : '');
-		$secure_securecode = array_key_exists('secure_securecode', $_POST) ? $_POST['secure_securecode'] : (array_key_exists('OP_KLARNA_SECURE_SECURECODE', $conf) ? $conf['OP_KLARNA_SECURE_SECURECODE'] : '');
-		$secure_currency = array_key_exists('secure_currency', $_POST) ? $_POST['secure_currency'] : (array_key_exists('OP_KLARNA_SECURE_CURRENCY', $conf) ? $conf['OP_KLARNA_SECURE_CURRENCY'] : '');
-		$secure_amount = array_key_exists('secure_amount', $_POST) ? $_POST['secure_amount'] : (array_key_exists('OP_KLARNA_SECURE_AMOUNT', $conf) ? $conf['OP_KLARNA_SECURE_AMOUNT'] : '');
-		$handler = array_key_exists('handler', $_POST) ? $_POST['handler'] : (array_key_exists('OP_KLARNA_HANDLER', $conf) ? $conf['OP_KLARNA_HANDLER'] : '');
-		$backurl = array_key_exists('backurl', $_POST) ? $_POST['backurl'] : (array_key_exists('OP_KLARNA_BACK_URL', $conf) ? $conf['OP_KLARNA_BACK_URL'] : '');
+		$account = array_key_exists('account', $_POST) ? $_POST['account'] : (array_key_exists('OP_CREDITCARD_ACCOUNT', $conf) ? $conf['OP_CREDITCARD_ACCOUNT'] : '');
+		$securecode = array_key_exists('securecode', $_POST) ? $_POST['securecode'] : (array_key_exists('OP_CREDITCARD_SECURECODE', $conf) ? $conf['OP_CREDITCARD_SECURECODE'] : '');
+		$terminal = array_key_exists('terminal', $_POST) ? $_POST['terminal'] : (array_key_exists('OP_CREDITCARD_TERMINAL', $conf) ? $conf['OP_CREDITCARD_TERMINAL'] : '');
+		$pay_mode = array_key_exists('pay_mode', $_POST) ? $_POST['pay_mode'] : (array_key_exists('OP_CREDITCARD_PAY_MODE', $conf) ? $conf['OP_CREDITCARD_PAY_MODE'] : 1);
+		$succeed_states = array_key_exists('succeed_states', $_POST) ? $_POST['succeed_states'] : (array_key_exists('OP_CREDITCARD_SUCCEED_STATES', $conf) ? $conf['OP_CREDITCARD_SUCCEED_STATES'] :2);
+		$fail_states = array_key_exists('fail_states', $_POST) ? $_POST['fail_states'] : (array_key_exists('OP_CREDITCARD_FAIL_STATES', $conf) ? $conf['OP_CREDITCARD_FAIL_STATES'] :6);
+		$pending_states = array_key_exists('pending_states', $_POST) ? $_POST['pending_states'] : (array_key_exists('OP_CREDITCARD_PENDING_STATES', $conf) ? $conf['OP_CREDITCARD_PENDING_STATES'] :2);
+		$secure_mode = array_key_exists('secure_mode', $_POST) ? $_POST['secure_mode'] : (array_key_exists('OP_CREDITCARD_SECURE_MODE', $conf) ? $conf['OP_CREDITCARD_SECURE_MODE'] : 0);
+		$secure_terminal = array_key_exists('secure_terminal', $_POST) ? $_POST['secure_terminal'] : (array_key_exists('OP_CREDITCARD_SECURE_TERMINAL', $conf) ? $conf['OP_CREDITCARD_SECURE_TERMINAL'] : '');
+		$secure_securecode = array_key_exists('secure_securecode', $_POST) ? $_POST['secure_securecode'] : (array_key_exists('OP_CREDITCARD_SECURE_SECURECODE', $conf) ? $conf['OP_CREDITCARD_SECURE_SECURECODE'] : '');
+		$secure_currency = array_key_exists('secure_currency', $_POST) ? $_POST['secure_currency'] : (array_key_exists('OP_CREDITCARD_SECURE_CURRENCY', $conf) ? $conf['OP_CREDITCARD_SECURE_CURRENCY'] : '');
+		$secure_amount = array_key_exists('secure_amount', $_POST) ? $_POST['secure_amount'] : (array_key_exists('OP_CREDITCARD_SECURE_AMOUNT', $conf) ? $conf['OP_CREDITCARD_SECURE_AMOUNT'] : '');
+		$handler = array_key_exists('handler', $_POST) ? $_POST['handler'] : (array_key_exists('OP_CREDITCARD_HANDLER', $conf) ? $conf['OP_CREDITCARD_HANDLER'] : '');
+		$backurl = array_key_exists('backurl', $_POST) ? $_POST['backurl'] : (array_key_exists('OP_CREDITCARD_BACK_URL', $conf) ? $conf['OP_CREDITCARD_BACK_URL'] : '');
 
 		$statesArray = array();
 		$states = OrderState::getOrderStates((int)($cookie->id_lang));
@@ -214,7 +214,6 @@ class Klarna extends PaymentModule {
 		$fail_states_string = '';
 		$pending_states_string = '';
 		
-		$pay_url = array(1 => 'Iframe', 0 => 'Redirect');
 		$pay_modes = array(1 => 'Iframe', 0 => 'Redirect');
 		$secure_modes = array(0 => 'Off', 1 => 'On');
 		
@@ -253,10 +252,24 @@ class Klarna extends PaymentModule {
 		
 		. '<label>'. $this->l('Pending States') . '</label>'
 		. '<div class="margin-form"><select name="pending_states">'. $pending_states_string. '</select></div>'
+		
+		. '<label>'. $this->l('3D Secure mode') . '</label>'
+		. '<div class="margin-form"><select name="secure_mode">'. $secure_modes_string . '</select></div>'
+				
+		. '<label>'. $this->l('3D Secure Terminal') . '</label>'
+		. '<div class="margin-form"><input type="text" size="8" name="secure_terminal" value="'. htmlentities($secure_terminal, ENT_COMPAT, 'UTF-8'). '" /></div>'
+		
+		. '<label>'. $this->l('3D Secure SecureCode') . '</label>'
+		. '<div class="margin-form"><input type="text" size="8" name="secure_securecode" value="'. htmlentities($secure_securecode, ENT_COMPAT, 'UTF-8'). '" /></div>'
+
+		. '<label>'. $this->l('3D Secure Currency') . '</label>'
+		. '<div class="margin-form"><input type="text" name="secure_currency" value="'. htmlentities($secure_currency, ENT_COMPAT, 'UTF-8'). '" /></div>'
+				
+		. '<label>'. $this->l('3D Secure Amount') . '</label>'
+		. '<div class="margin-form"><input type="text" name="secure_amount" value="'. htmlentities($secure_amount, ENT_COMPAT, 'UTF-8'). '" /></div>'
 					
 		. '<label>'. $this->l('Transaction URL') . '</label>'
 		. '<div class="margin-form"><input type="text" size="82" name="handler" value="'. htmlentities($handler, ENT_COMPAT, 'UTF-8'). '" /></div>'
-		// . '<div class="margin-form"><select name="pay_mode">'. htmlentities($handler, ENT_COMPAT, 'UTF-8') . '</select></div>'
 		
 		. '<label>'. $this->l('Return URL') . '</label>'
 		. '<div class="margin-form"><input type="text" size="82" name="backurl" value="'. htmlentities($backurl, ENT_COMPAT, 'UTF-8'). '" /></div>'
@@ -265,37 +278,18 @@ class Klarna extends PaymentModule {
 
 	}
 
-	public function getStateIso($id_state,$iso_country) {
-		
-		$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
-				SELECT `iso_code`
-				FROM `'._DB_PREFIX_.'state`
-				WHERE `id_state` = '.(int)$id_state
-			);
-
-		if($iso_country == "US"){
-			$result = $result?$result:"NY";
-		}
-		return $result;
-	}
-
 	//前台支付提交界面
 	public function execPayment($cart) {
-		
 		if (!$this->active)
-		return;
+			return;
 		global $smarty;
 		$currency=$this->getCurrency();
 		
-		$this->validateOrder($cart->id, Configuration::get('OP_KLARNA_ORDER_STATE'), $cart->getOrderTotal(),$this->displayName);
+		$this->validateOrder($cart->id, Configuration::get('OP_CREDITCARD_ORDER_STATE'), $cart->getOrderTotal(),$this->displayName);
 		
 		
 		$billingAddress=new Address(intval($cart->id_address_invoice));
-		$country_isob = Country::getIsoById($billingAddress->id_country);
-		$state_isob = $this->getStateIso($billingAddress->id_state,$country_isob);
 		$shippingAddress=new Address(intval($cart->id_address_delivery));
-		$country_isos = Country::getIsoById($shippingAddress->id_country);
-		$state_isos = $this->getStateIso($shippingAddress->id_state,$country_isos);
 		$customer = new Customer(intval($cart->id_customer));
 		$productDetails = $this->getProductItems($cart->getProducts());
 		
@@ -307,19 +301,19 @@ class Klarna extends PaymentModule {
 		//初始化是否3D交易
 		$_SESSION['is_3d'] = 0;
 		//判断是否启用3D功能
-		if(Configuration :: get('OP_KLARNA_SECURE_MODE') == 1){
+		if(Configuration :: get('OP_CREDITCARD_SECURE_MODE') == 1){
 			//检验是否需要3D验证
 			$validate_arr = $this->validate3D($order_currency, $order_amount);
 		}else{
-			$validate_arr['terminal'] = Configuration :: get('OP_KLARNA_TERMINAL');
-			$validate_arr['securecode'] = Configuration :: get('OP_KLARNA_SECURECODE');
+			$validate_arr['terminal'] = Configuration :: get('OP_CREDITCARD_TERMINAL');
+			$validate_arr['securecode'] = Configuration :: get('OP_CREDITCARD_SECURECODE');
 		}
 		
 		
 		//提交地址
-		$handler = Configuration :: get('OP_KLARNA_HANDLER');
+		$handler = Configuration :: get('OP_CREDITCARD_HANDLER');
 		//账户
-		$account = Configuration :: get('OP_KLARNA_ACCOUNT');
+		$account = Configuration :: get('OP_CREDITCARD_ACCOUNT');
 		//终端号
 		$terminal = $validate_arr['terminal'];
 		//securecode密匙
@@ -327,11 +321,13 @@ class Klarna extends PaymentModule {
         //商户订单号
         $order_number = $this->currentOrder;
         //交易返回地址
-        $backUrl = Configuration :: get('OP_KLARNA_BACK_URL');
+        $backUrl = Configuration :: get('OP_CREDITCARD_BACK_URL');
         //服务器响应地址
-        $noticeUrl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/Klarna/payment_notice.php';
+        $noticeUrl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPcreditcard/payment_notice.php';
         //备注
         $order_notes = '';
+		//支付方式
+		$methods = 'Credit Card';
 		//客人的名
 		$billing_firstName = empty ($billingAddress->firstname) ? '' : $this->OceanHtmlSpecialChars($billingAddress->firstname);
 		//客人的姓
@@ -341,9 +337,9 @@ class Klarna extends PaymentModule {
 		//客人的联系电话
 		$billing_phone = empty ($billingAddress->phone_mobile) ? (empty ($billingAddress->phone) ? 999999 : $billingAddress->phone) : $billingAddress->phone_mobile;
 		//客人的国家
-		$billing_country = empty ($country_isob) ? '' : $country_isob;
+		$billing_country = empty ($billingAddress->country) ? '' : $billingAddress->country;
 		//客人的省或州
-		$billing_state = $state_isob;
+		$billing_state = empty ($address->id_state) ? '' : State::getNameById($address->id_state);
 		//客人的城市
 		$billing_city = empty ($billingAddress->city) ? '' : $billingAddress->city;
 		//客人的地址
@@ -358,9 +354,9 @@ class Klarna extends PaymentModule {
 		//收货人手机
 		$ship_phone = empty ($shippingAddress->phone_mobile) ? (empty ($shippingAddress->phone) ? 999999 : $shippingAddress->phone) : $shippingAddress->phone_mobile;
 		//收货人国家
-		$ship_country = empty ($country_isos) ? '' : $country_isos;
+		$ship_country = empty ($shippingAddress->country) ? '' : $shippingAddress->country;
 		//收货人州
-		$ship_state = $state_isos;
+		$ship_state = empty ($address->id_state) ? '' : State::getNameById($address->id_state);
 		//收货人城市
 		$ship_city = empty ($shippingAddress->city) ? '' : $shippingAddress->city;
 		//收货人地址
@@ -368,7 +364,7 @@ class Klarna extends PaymentModule {
 		//收货人邮编
 		$ship_zip = empty ($shippingAddress->postcode) ? 999999 : $shippingAddress->postcode;
 		//产品名称
-		$productName = substr($productDetails['productName'],0,500);
+		$productName = $productDetails['productName'];
 		//产品SKU
 		$productSku = $productDetails['productSku'];
 		//产品数量
@@ -381,65 +377,6 @@ class Klarna extends PaymentModule {
 		$signsrc  = $account.$terminal.$backUrl.$order_number.$order_currency.$order_amount.$billing_firstName.$billing_lastName.$billing_email.$securecode;
 		//sha256加密
 		$signValue  = hash("sha256",$signsrc);
-		//商品税费
-		$sui = $cart->getSummaryDetails()["total_products_wt"]-$cart->getSummaryDetails()["total_products"];
-		//klarna附加参数
-		$itemList = '{
-            "0":{
-                "type":"1",
-                "title":"'.substr($productDetails['productName'],0,100).'",
-                "sku":"'.$productDetails['productSku'].'",
-                "price":"'.($cart->getSummaryDetails()["total_price"]-$sui-$cart->getSummaryDetails()["total_shipping"]).'",
-                "quantity":"1",
-                "total_amount":"'.($cart->getSummaryDetails()["total_price"]-$sui-$cart->getSummaryDetails()["total_shipping"]).'",
-                "taxRate":"'.round(($cart->getSummaryDetails()["total_products_wt"]-$cart->getSummaryDetails()["total_products"]) / $cart->getSummaryDetails()["total_products"],2).'",
-                "taxPrice":"'.($cart->getSummaryDetails()["total_products_wt"]-$cart->getSummaryDetails()["total_products"]).'",
-                "image_url":"",
-                "product_url":"",
-                "remark":""
-            },
-            "1":{
-                "type":"3",
-                "title":"折扣",
-                "sku":"'.$productDetails['productSku'].'",
-                "price":"0",
-                "quantity":"0",
-                "total_amount":"0",
-                "taxRate":"0",
-                "taxPrice":"0",
-                "image_url":"",
-                "product_url":"",
-                "remark":""
-            },
-            "2":{
-                "type":"4",
-                "title":"运费",
-                "sku":"'.$productDetails['productSku'].'",
-                "price":"'.$cart->getSummaryDetails()["total_shipping"].'",
-                "quantity":"1",
-                "total_amount":"'.$cart->getSummaryDetails()["total_shipping"].'",
-                "taxRate":"1",
-                "taxPrice":"'.$cart->getSummaryDetails()["total_shipping"].'",
-                "image_url":"",
-                "product_url":"",
-                "remark":""
-            },
-            "3":{
-                "type":"5",
-                "title":"税费",
-                "sku":"'.$productDetails['productSku'].'",
-                "price":"'.($cart->getSummaryDetails()["total_products_wt"]-$cart->getSummaryDetails()["total_products"]).'",
-                "quantity":"1",
-                "total_amount":"'.($cart->getSummaryDetails()["total_products_wt"]-$cart->getSummaryDetails()["total_products"]).'",
-                "taxRate":"1",
-                "taxPrice":"'.($cart->getSummaryDetails()["total_products_wt"]-$cart->getSummaryDetails()["total_products"]).'",
-                "image_url":"",
-                "product_url":"",
-                "remark":""
-            }
-        }';   
-
-
 		//支付页面类型	
 		include_once(dirname(__FILE__).'/MobileDetect.php');
 		$detect = new MobileDetect();
@@ -468,6 +405,7 @@ class Klarna extends PaymentModule {
          	        "order_number = "      .$order_number . "\r\n".
          	        "order_currency = "    .$order_currency . "\r\n".
          	        "order_amount = "      .$order_amount . "\r\n".
+         	        "methods = "           .$methods . "\r\n".
          	        "signValue = "         .$signValue . "\r\n".
          	        "billing_firstName = " .$billing_firstName . "\r\n".
          	        "billing_lastName = "  .$billing_lastName . "\r\n".
@@ -489,7 +427,6 @@ class Klarna extends PaymentModule {
          	        "productName = "       .$productName . "\r\n".
          	        "productSku = "        .$productSku . "\r\n".
          	        "productNum = "        .$productNum . "\r\n".
-					"itemList = "          .$itemList . "\r\n".
          	        "cart_info = "         .$cart_info . "\r\n".
 					"cart_api = "          .$cart_api . "\r\n".
 					"pages = "             .$pages . "\r\n".
@@ -533,8 +470,8 @@ class Klarna extends PaymentModule {
 						'productName'=>$productName,
 						'productSku'=>$productSku,
 						'productNum'=>$productNum,
-						'itemList'=>$itemList,
 						'order_notes'=>$order_notes,
+						'methods'=>$methods,
 						'signValue'=>$signValue,
 						'cart_info'=>$cart_info,
 						'cart_api'=>$cart_api,
@@ -542,7 +479,7 @@ class Klarna extends PaymentModule {
 		    ));
 
 		
-		$pay_mode = Configuration :: get('OP_KLARNA_PAY_MODE');
+		$pay_mode = Configuration :: get('OP_CREDITCARD_PAY_MODE');
 		
 		if($pay_mode == 1){
 			return $this->display(__FILE__, 'payment.tpl');
@@ -560,13 +497,13 @@ class Klarna extends PaymentModule {
 
 		global $smarty;
 
-		$this_path_ssl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'modules/Klarna/';
+		$this_path_ssl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'modules/OPcreditcard/';
 
 		$smarty->assign(array (
 			'this_path_ssl' => $this_path_ssl
 		));
 
-		return $this->display(__FILE__, 'Klarna.tpl');
+		return $this->display(__FILE__, 'CreditCard.tpl');
 	}
 
 	public function hookPaymentReturn($params) {
@@ -615,10 +552,10 @@ class Klarna extends PaymentModule {
 		$is_3d = 0;
 		 
 		//获取3D功能下各个的币种
-		$currencies_value_str = Configuration :: get('OP_KLARNA_SECURE_CURRENCY');
+		$currencies_value_str = Configuration :: get('OP_CREDITCARD_SECURE_CURRENCY');
 		$currencies_value = explode(';', $currencies_value_str);
 		//获取3D功能下各个的金额
-		$amount_value_str = Configuration :: get('OP_KLARNA_SECURE_AMOUNT');
+		$amount_value_str = Configuration :: get('OP_CREDITCARD_SECURE_AMOUNT');
 		$amount_value = explode(';', $amount_value_str);
 		 
 		$amountValidate = array_combine($currencies_value, $amount_value);
@@ -637,12 +574,12 @@ class Klarna extends PaymentModule {
 	
 
 		if($is_3d ==  0){
-			$validate_arr['terminal'] = Configuration :: get('OP_KLARNA_TERMINAL');
-			$validate_arr['securecode'] = Configuration :: get('OP_KLARNA_SECURECODE');
+			$validate_arr['terminal'] = Configuration :: get('OP_CREDITCARD_TERMINAL');
+			$validate_arr['securecode'] = Configuration :: get('OP_CREDITCARD_SECURECODE');
 		}elseif($is_3d == 1){
 			//3D
-			$validate_arr['terminal'] = Configuration :: get('OP_KLARNA_SECURE_TERMINAL');
-			$validate_arr['securecode'] = Configuration :: get('OP_KLARNA_SECURE_SECURECODE');
+			$validate_arr['terminal'] = Configuration :: get('OP_CREDITCARD_SECURE_TERMINAL');
+			$validate_arr['securecode'] = Configuration :: get('OP_CREDITCARD_SECURE_SECURECODE');
 			$_SESSION['is_3d'] = 1;
 		}
 	

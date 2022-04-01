@@ -13,11 +13,11 @@ $account = $_REQUEST['account'];
 $terminal = $_REQUEST['terminal'];
 
 //匹配终端号   判断是否3D交易
-if($terminal == Configuration :: get('OP_KLARNA_TERMINAL')){
-	$securecode = Configuration :: get('OP_KLARNA_SECURECODE');
-}elseif($terminal == Configuration :: get('OP_KLARNA_SECURE_TERMINAL')){
+if($terminal == Configuration :: get('OP_CREDITCARD_TERMINAL')){
+	$securecode = Configuration :: get('OP_CREDITCARD_SECURECODE');
+}elseif($terminal == Configuration :: get('OP_CREDITCARD_SECURE_TERMINAL')){
 	//3D
-	$securecode = Configuration :: get('OP_KLARNA_SECURE_SECURECODE');
+	$securecode = Configuration :: get('OP_CREDITCARD_SECURE_SECURECODE');
 }else{
 	$securecode = '';
 }
@@ -105,26 +105,26 @@ if(strtoupper($local_signValue) == strtoupper($back_signValue)){
 	}else{	
 		if($payment_status == 1 ){
 			//支付成功
-			$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_SUCCEED_STATES'), $order_number);	
+			$new_history->changeIdOrderState((int)Configuration :: get('OP_CREDITCARD_SUCCEED_STATES'), $order_number);	
 			$new_history->addWithemail(true);
 			
 		}elseif ($payment_status == -1 ){	
 			//交易待处理
 			//是否预授权交易
 			if($payment_authType == 1){
-				$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_SUCCEED_STATES'), $order_number);
+				$new_history->changeIdOrderState((int)Configuration :: get('OP_CREDITCARD_SUCCEED_STATES'), $order_number);
 				$new_history->addWithemail(true);
 			}else{
-				$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_PENDING_STATES'), $order_number);
+				$new_history->changeIdOrderState((int)Configuration :: get('OP_CREDITCARD_PENDING_STATES'), $order_number);
 			}
 		}else{
 			//支付失败
-			$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_FAIL_STATES'), $order_number);
+			$new_history->changeIdOrderState((int)Configuration :: get('OP_CREDITCARD_FAIL_STATES'), $order_number);
 		}		
 	}
 	
 }else{  //数据签名对比失败
-	$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_FAIL_STATES'), $order_number);
+	$new_history->changeIdOrderState((int)Configuration :: get('OP_CREDITCARD_FAIL_STATES'), $order_number);
 }
 
 
@@ -136,5 +136,5 @@ $smarty->assign(array(
 	'payment_status'=>$payment_status,
 	'payment_details'=>$payment_details,
 	'payment_solutions'=>$payment_solutions,
-	'this_path_ssl' => Tools::getHttpHost(true, true).__PS_BASE_URI__.'modules/Klarna/'));
+	'this_path_ssl' => Tools::getHttpHost(true, true).__PS_BASE_URI__.'modules/OPcreditcard/'));
 $smarty->display(dirname(__FILE__).'/payment_result.tpl');

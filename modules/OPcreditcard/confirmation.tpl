@@ -25,18 +25,18 @@
 {assign var='current_step' value='payment'}
 {if $success==1}
 	<p class="alert alert-success" style="color:green">{$payment_details}</p>
-	<p>{l s='Your order on' mod='Klarna'} <span class="bold">{$shop_name}</span> {l s='is now complete.' mod='Klarna'}
+	<p>{l s='Your order on' mod='CreditCard'} <span class="bold">{$shop_name}</span> {l s='is now complete.' mod='CreditCard'}
 		<br /><br />
-		{l s='Once your card has been verified and funds have been accepted, your order will be shipped.' mod='Klarna'}
-		<br /><br />- {l s='Total Payment Pending:' mod='Klarna'} <span class="price">{$order_amount}</span>
-		<br /><br />{l s='For any questions or for further information, please contact our' mod='Klarna'} <a href="{$base_dir}contact-form.php">{l s='customer support' mod='Klarna'}</a>.
+		{l s='Once your card has been verified and funds have been accepted, your order will be shipped.' mod='CreditCard'}
+		<br /><br />- {l s='Total Payment Pending:' mod='CreditCard'} <span class="price">{$order_amount}</span>
+		<br /><br />{l s='For any questions or for further information, please contact our' mod='CreditCard'} <a href="{$base_dir}contact-form.php">{l s='customer support' mod='CreditCard'}</a>.
 	</p>
 {else}
 	<p class="alert alert-danger">{$payment_details}</p>
 	<p class="alert alert-warning" >{$payment_solutions}</p>
 	<p>
-		{l s='We noticed a problem with your order. If you think this is an error, you can contact our' mod='Klarna'} 
-		<a href="{$base_dir}contact-form.php">{l s='customer support' mod='Klarna'}</a>.
+		{l s='We noticed a problem with your order. If you think this is an error, you can contact our' mod='CreditCard'} 
+		<a href="{$base_dir}contact-form.php">{l s='customer support' mod='CreditCard'}</a>.
 	</p>
 {/if}
 <br />

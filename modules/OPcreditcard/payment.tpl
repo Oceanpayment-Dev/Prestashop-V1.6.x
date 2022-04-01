@@ -43,31 +43,31 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" /> 
 		<link rel="icon" type="image/vnd.microsoft.icon" href="{$favicon_url}?{$img_update_time}" />
 		<link rel="shortcut icon" type="image/x-icon" href="{$favicon_url}?{$img_update_time}" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/global.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/autoload/highdpi.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/autoload/responsive-tables.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/autoload/uniform.default.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}js/jquery/plugins/fancybox/jquery.fancybox.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockbanner/blockbanner.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/product_list.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockcart/blockcart.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockcategories/blockcategories.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockcurrencies/blockcurrencies.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}modules/blockfacebook/css/blockfacebook.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blocklanguages/blocklanguages.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockcontact/blockcontact.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blocknewsletter/blocknewsletter.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}js/jquery/plugins/autocomplete/jquery.autocomplete.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blocksearch/blocksearch.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blocktags/blocktags.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockuserinfo/blockuserinfo.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockviewed/blockviewed.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/homeslider/homeslider.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}modules/themeconfigurator/css/hooks.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blockwishlist/blockwishlist.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/productcomments/productcomments.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blocktopmenu/css/blocktopmenu.css" type="text/css" media="all" />
-		<link rel="stylesheet" href="{$base_dir}themes/default-bootstrap/css/modules/blocktopmenu/css/superfish-modified.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/global.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/autoload/highdpi.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/autoload/responsive-tables.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/autoload/uniform.default.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/js/jquery/plugins/fancybox/jquery.fancybox.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockbanner/blockbanner.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/product_list.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockcart/blockcart.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockcategories/blockcategories.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockcurrencies/blockcurrencies.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/modules/blockfacebook/css/blockfacebook.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blocklanguages/blocklanguages.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockcontact/blockcontact.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blocknewsletter/blocknewsletter.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/js/jquery/plugins/autocomplete/jquery.autocomplete.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blocksearch/blocksearch.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blocktags/blocktags.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockuserinfo/blockuserinfo.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockviewed/blockviewed.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/homeslider/homeslider.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/modules/themeconfigurator/css/hooks.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blockwishlist/blockwishlist.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/productcomments/productcomments.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blocktopmenu/css/blocktopmenu.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="/prestashop1609/themes/default-bootstrap/css/modules/blocktopmenu/css/superfish-modified.css" type="text/css" media="all" />
 {if isset($css_files)}
 	{foreach from=$css_files key=css_uri item=media}
 		<link rel="stylesheet" href="{$css_uri|escape:'html':'UTF-8'}" type="text/css" media="{$media|escape:'html':'UTF-8'}" />
@@ -157,13 +157,12 @@
 						<input type="hidden" name="ship_country" value="{$ship_country}" />
 						<input type="hidden" name="ship_state" value="{$ship_state}" />
 						<input type="hidden" name="ship_city" value="{$ship_city}" />
-						<input type="hidden" name="ship_addr" value="{$ship_addr}" />
+						<input type="hidden" name="ship_address" value="{$ship_address}" />
 						<input type="hidden" name="ship_zip" value="{$ship_zip}" />
 						<input type="hidden" name="order_notes" value="{$order_notes}" />
 						<input type="hidden" name="productName" value="{$productName}" />
 						<input type="hidden" name="productSku" value="{$productSku}" />
 						<input type="hidden" name="productNum" value="{$productNum}" />
-						<input type="hidden" name="itemList" value='{$itemList}' />
 						<input type="hidden" name="cart_info" value="{$cart_info}" />
 						<input type="hidden" name="cart_api" value="{$cart_api}" />
 						<input type="hidden" name="pages" value="{$pages}" />
