@@ -1,0 +1,39 @@
+2016-01-28 05:08:59
+response_type = 0
+account = 140105
+terminal = 14010508
+payment_id = 160128180808140105404
+order_number = 11
+order_currency = USD
+order_amount = 68.05
+payment_status = 1
+payment_details = Successful test transaction
+signValue = B1CCC5F9D74E1A30AD8A908D89D519376E37C4A4591D7870C80DB7EE8B1D5F7F
+order_notes = Home phone:1380000138000
+card_number = 
+payment_authType = 0
+payment_risk = 
+*************************************
+2016-01-28 05:08:56[POST to Oceanpayment]
+account = 140105
+terminal = 14010508
+backUrl = http://localhost/prestashop1561/modules/OPinstanttransfer/payment_result.php
+noticeUrl = http://localhost/prestashop1561/modules/OPinstanttransfer/payment_notice.php
+order_number = 11
+order_currency = USD
+order_amount = 68.05
+billing_firstName = Optest
+billing_lastName = optest
+billing_email = pj2818@163.com
+billing_phone = 1380000138000
+billing_country = United States
+billing_state = 
+billing_city = optestcity
+billing_address = optest
+billing_zip = 51800
+methods = InstantTransfer
+signValue = ff852ef2d5eca8291b34ddbe3ed5a09247ca3cc525e519001dfe156ba2c6e05e
+cart_info = prestashop
+cart_api = V1.7.1
+order_notes = Home phone:1380000138000
+*************************************
