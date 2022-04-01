@@ -12,8 +12,10 @@ function oceanpayment_commit(){
 		<form action="{$this_path_ssl}confirmation.php" method="post" target="_top" id="oceanpayment_form" name="oceanpayment_form">
 			<input type="hidden" name="ErrorCode" value="{$ErrorCode}" />
 			<input type="hidden" name="order_number" value="{$order_number}" />
+			<input type="hidden" name="order_amount" value="{$order_amount}" />
 			<input type="hidden" name="payment_status" value="{$payment_status}" />
 			<input type="hidden" name="payment_details" value="{$payment_details}" />
+			<input type="hidden" name="payment_solutions" value="{$payment_solutions}" />	
 		</form>
 	</body>
 </html>

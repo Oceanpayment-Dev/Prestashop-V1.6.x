@@ -1,4 +1,5 @@
 <?php
+
 /* SSL Management */
 $useSSL = true;
 include(dirname(__FILE__).'/../../config/config.inc.php');
@@ -6,7 +7,6 @@ include(dirname(__FILE__).'/../../init.php');
 
 //获取推送输入流XML
 $xml_str = file_get_contents("php://input");
-
 
 //判断返回的输入流是否为xml
 if(xml_parser($xml_str)){
@@ -30,11 +30,20 @@ if(xml_parser($xml_str)){
 	$_REQUEST['methods'] 	  	  = (string)$xml->methods;
 	$_REQUEST['payment_country']  = (string)$xml->payment_country;
 	$_REQUEST['payment_solutions']= (string)$xml->payment_solutions;
-
+	
 	//securecode
-	$securecode = Configuration :: get('OP_SOFORTBANKING_SECURECODE');
+	//匹配终端号   判断是否3D交易
+	if($_REQUEST['terminal'] == Configuration :: get('OP_KLARNA_TERMINAL')){
+		$securecode = Configuration :: get('OP_KLARNA_SECURECODE');
+	}elseif($_REQUEST['terminal'] == Configuration :: get('OP_KLARNA_SECURE_TERMINAL')){
+		//3D
+		$securecode = Configuration :: get('OP_KLARNA_SECURE_SECURECODE');
+	}else{
+		$securecode = '';
+	}	
 		
 }
+
 
 //交易推送
 if($_REQUEST['response_type'] == 1){
@@ -89,29 +98,29 @@ if($_REQUEST['response_type'] == 1){
 		}else{
 			if($_REQUEST['payment_status'] == 1 ){
 				//支付成功
-				$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_SUCCEED_STATES'), $_REQUEST['order_number']);
+				$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_SUCCEED_STATES'), $_REQUEST['order_number']);
 				$new_history->addWithemail(true);
 					
 			}elseif ($_REQUEST['payment_status'] == -1 ){
 				//交易待处理
 				//是否预授权交易
 				if($_REQUEST['payment_authType'] == 1){
-					$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_SUCCEED_STATES'), $_REQUEST['order_number']);
+					$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_SUCCEED_STATES'), $_REQUEST['order_number']);
 					$new_history->addWithemail(true);
 				}else{
-					$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_PENDING_STATES'), $_REQUEST['order_number']);
+					$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_PENDING_STATES'), $_REQUEST['order_number']);
 				}
 			}else{
 				//支付失败
-				$new_history->changeIdOrderState((int)Configuration :: get('OP_SOFORTBANKING_FAIL_STATES'), $_REQUEST['order_number']);
+				$new_history->changeIdOrderState((int)Configuration :: get('OP_KLARNA_FAIL_STATES'), $_REQUEST['order_number']);
 			}
 		}
 		
 		echo "receive-ok";
-		
 	}
 	
 }
+
 
 
 
