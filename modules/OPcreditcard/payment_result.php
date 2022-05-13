@@ -59,7 +59,7 @@ $getErrorCode = explode(':', $payment_details);
 $ErrorCode = $getErrorCode[0];
 
 
-if(Configuration :: get('OP_CREDITCARD_WEIRE_LOG')) {
+if(Configuration :: get('OP_CREDITCARD_WRITE_LOG')) {
 	$logType = '[Browser Return]';
 
 
