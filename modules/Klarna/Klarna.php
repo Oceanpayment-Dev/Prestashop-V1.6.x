@@ -52,6 +52,7 @@ class Klarna extends PaymentModule {
 			!Configuration :: updateValue('OP_KLARNA_SECURE_AMOUNT', '') OR
 			!Configuration :: updateValue('OP_KLARNA_HANDLER', $action_URL) OR 
 			!Configuration :: updateValue('OP_KLARNA_BACK_URL', $back_url) OR 
+            		!Configuration :: updateValue('OP_KLARNA_WRITE_LOG', '1') OR
 			!parent :: install() OR
 			!$this->registerHook('payment') OR 
 			!$this->registerHook('paymentReturn'))
@@ -77,6 +78,7 @@ class Klarna extends PaymentModule {
 			!Configuration :: deleteByName('OP_KLARNA_SECURE_AMOUNT') OR
 			!Configuration :: deleteByName('OP_KLARNA_HANDLER') OR 
 			!Configuration :: deleteByName('OP_KLARNA_BACK_URL') OR 
+            		!Configuration :: deleteByName('OP_KLARNA_WRITE_LOG') OR
 			!parent :: uninstall())
 			return false;
 		return true;
@@ -152,6 +154,7 @@ class Klarna extends PaymentModule {
 				Configuration :: updateValue('OP_KLARNA_SECURE_AMOUNT', strval($_POST['secure_amount']));
 				Configuration :: updateValue('OP_KLARNA_HANDLER', strval($_POST['handler']));
 				Configuration :: updateValue('OP_KLARNA_BACK_URL', strval($_POST['backurl']));
+				Configuration :: updateValue('OP_KLARNA_WRITE_LOG', strval($_POST['logs']));
 				$this->displayConf();
 			} else
 				$this->displayErrors();
@@ -191,7 +194,8 @@ class Klarna extends PaymentModule {
 			'OP_KLARNA_SECURE_CURRENCY',
 			'OP_KLARNA_SECURE_AMOUNT',
 			'OP_KLARNA_HANDLER',
-			'OP_KLARNA_BACK_URL'
+			'OP_KLARNA_BACK_URL',
+            		'OP_KLARNA_WRITE_LOG'
 		));
 		$account = array_key_exists('account', $_POST) ? $_POST['account'] : (array_key_exists('OP_KLARNA_ACCOUNT', $conf) ? $conf['OP_KLARNA_ACCOUNT'] : '');
 		$securecode = array_key_exists('securecode', $_POST) ? $_POST['securecode'] : (array_key_exists('OP_KLARNA_SECURECODE', $conf) ? $conf['OP_KLARNA_SECURECODE'] : '');
@@ -207,7 +211,8 @@ class Klarna extends PaymentModule {
 		$secure_amount = array_key_exists('secure_amount', $_POST) ? $_POST['secure_amount'] : (array_key_exists('OP_KLARNA_SECURE_AMOUNT', $conf) ? $conf['OP_KLARNA_SECURE_AMOUNT'] : '');
 		$handler = array_key_exists('handler', $_POST) ? $_POST['handler'] : (array_key_exists('OP_KLARNA_HANDLER', $conf) ? $conf['OP_KLARNA_HANDLER'] : '');
 		$backurl = array_key_exists('backurl', $_POST) ? $_POST['backurl'] : (array_key_exists('OP_KLARNA_BACK_URL', $conf) ? $conf['OP_KLARNA_BACK_URL'] : '');
-
+		$logs_mode = array_key_exists('logs', $_POST) ? $_POST['logs'] : (array_key_exists('OP_KLARNA_WRITE_LOG', $conf) ? $conf['OP_KLARNA_WRITE_LOG'] : 1);
+		
 		$statesArray = array();
 		$states = OrderState::getOrderStates((int)($cookie->id_lang));
 		$succeed_states_string = '';
@@ -217,6 +222,7 @@ class Klarna extends PaymentModule {
 		$pay_url = array(1 => 'Iframe', 0 => 'Redirect');
 		$pay_modes = array(1 => 'Iframe', 0 => 'Redirect');
 		$secure_modes = array(0 => 'Off', 1 => 'On');
+        	$logs_modes = array(1 => 'On', 0 => 'Off');
 		
 		foreach ($pay_modes AS $val => $mode)
 			$pay_mode_string .= "<option value='".$val."' ".($pay_mode==$val?"selected='selected'":"").">".$mode."</option>";
@@ -228,7 +234,8 @@ class Klarna extends PaymentModule {
 			$pending_states_string .= "<option value='".$state['id_order_state']."' ".($pending_states==$state['id_order_state']?"selected='selected'":"").">".$state['name']."</option>";
 		foreach ($secure_modes AS $val => $mode)
 			$secure_modes_string .= "<option value='".$val."' ".($secure_mode==$val?"selected='selected'":"").">".$mode."</option>";
-		
+		foreach ($logs_modes AS $val => $mode)
+            		$write_logs_string .= "<option value='".$val."' ".($logs_mode==$val?"selected='selected'":"").">".$mode."</option>";
 		
 		$this->_html .= '<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" style="clear: both;"><fieldset><legend><img src="../img/admin/contact.gif" />'
 		. $this->l('Settings') . '</legend>'
@@ -261,6 +268,9 @@ class Klarna extends PaymentModule {
 		. '<label>'. $this->l('Return URL') . '</label>'
 		. '<div class="margin-form"><input type="text" size="82" name="backurl" value="'. htmlentities($backurl, ENT_COMPAT, 'UTF-8'). '" /></div>'
 		
+		. '<label>'. $this->l('Write The Logs') . '</label>'
+        	. '<div class="margin-form"><select name="logs">'. $write_logs_string . '</select></div>'
+			
 		. '<br /><center><input type="submit" name="submitOceanpayment" value="'. $this->l('Update settings'). '" class="btn" /></center></fieldset></form>';
 
 	}
