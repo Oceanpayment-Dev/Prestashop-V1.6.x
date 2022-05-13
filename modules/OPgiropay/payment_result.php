@@ -48,44 +48,45 @@ $response_type = $_REQUEST['response_type'];
 $getErrorCode = explode(':', $payment_details);
 $ErrorCode = $getErrorCode[0];
 
-$logType = '[Browser Return]';
+if(Configuration :: get('OP_GIROPAY_WEIRE_LOG')) {
+	$logType = '[Browser Return]';
 
 
-//记录日志
-$filedate   = date('Y-m-d');
+	//记录日志
+	$filedate   = date('Y-m-d');
 
-$returndate = date('Y-m-d H:i:s');
-	
-$newfile    = fopen( "oceanpayment_log/" . $filedate . ".log", "a+" );
-	
-$return_log = $returndate . $logtype . "\r\n".
-		"response_type = "       . $_REQUEST['response_type'] . "\r\n".
-		"account = "             . $_REQUEST['account'] . "\r\n".
-		"terminal = "            . $_REQUEST['terminal'] . "\r\n".
-		"payment_id = "          . $_REQUEST['payment_id'] . "\r\n".
-		"order_number = "        . $_REQUEST['order_number'] . "\r\n".
-		"order_currency = "      . $_REQUEST['order_currency'] . "\r\n".
-		"order_amount = "        . $_REQUEST['order_amount'] . "\r\n".
-		"payment_status = "      . $_REQUEST['payment_status'] . "\r\n".
-		"payment_details = "     . $_REQUEST['payment_details'] . "\r\n".
-		"signValue = "           . $_REQUEST['signValue'] . "\r\n".
-		"order_notes = "         . $_REQUEST['order_notes'] . "\r\n".
-		"card_number = "         . $_REQUEST['card_number'] . "\r\n".
-		"payment_authType = "    . $_REQUEST['payment_authType'] . "\r\n".
-		"payment_risk = "        . $_REQUEST['payment_risk'] . "\r\n";
+	$returndate = date('Y-m-d H:i:s');
 
-$return_log = $return_log . "*************************************\r\n";
-	
-$return_log = $return_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
-	
-$filename   = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
-	
-fwrite($filename,$return_log);
+	$newfile    = fopen( "oceanpayment_log/" . $filedate . ".log", "a+" );
 
-fclose($filename);
+	$return_log = $returndate . $logType . "\r\n".
+			"response_type = "       . $_REQUEST['response_type'] . "\r\n".
+			"account = "             . $_REQUEST['account'] . "\r\n".
+			"terminal = "            . $_REQUEST['terminal'] . "\r\n".
+			"payment_id = "          . $_REQUEST['payment_id'] . "\r\n".
+			"order_number = "        . $_REQUEST['order_number'] . "\r\n".
+			"order_currency = "      . $_REQUEST['order_currency'] . "\r\n".
+			"order_amount = "        . $_REQUEST['order_amount'] . "\r\n".
+			"payment_status = "      . $_REQUEST['payment_status'] . "\r\n".
+			"payment_details = "     . $_REQUEST['payment_details'] . "\r\n".
+			"signValue = "           . $_REQUEST['signValue'] . "\r\n".
+			"order_notes = "         . $_REQUEST['order_notes'] . "\r\n".
+			"card_number = "         . $_REQUEST['card_number'] . "\r\n".
+			"payment_authType = "    . $_REQUEST['payment_authType'] . "\r\n".
+			"payment_risk = "        . $_REQUEST['payment_risk'] . "\r\n";
 
-fclose($newfile);
+	$return_log = $return_log . "*************************************\r\n";
 
+	$return_log = $return_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
+
+	$filename   = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
+
+	fwrite($filename,$return_log);
+
+	fclose($filename);
+
+	fclose($newfile);
+}
 
 // So you migth have two order states
 $new_history = new OrderHistory();
