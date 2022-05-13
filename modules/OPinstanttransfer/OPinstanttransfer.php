@@ -40,7 +40,7 @@ class OPinstanttransfer extends PaymentModule {
 		$back_url='http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPinstanttransfer/payment_result.php';
 
 		if (!Configuration :: updateValue('OP_ITRANSFER_SUCCEED_STATES', '2') OR !Configuration :: updateValue('OP_ITRANSFER_FAIL_STATES', '6') OR !parent :: install() OR !Configuration :: updateValue('OP_ITRANSFER_ACCOUNT', '') OR !Configuration :: updateValue('OP_ITRANSFER_SECURECODE', '') 
-		 OR !Configuration :: updateValue('OP_ITRANSFER_HANDLER', $action_URL) OR !Configuration :: updateValue('OP_ITRANSFER_BACK_URL', $back_url) OR !$this->registerHook('payment') OR !$this->registerHook('paymentReturn'))
+		 OR !Configuration :: updateValue('OP_ITRANSFER_HANDLER', $action_URL) OR !Configuration :: updateValue('OP_ITRANSFER_BACK_URL', $back_url) OR !Configuration :: updateValue('OP_ITRANSFER_WEIRE_LOG', '1') OR !$this->registerHook('payment') OR !$this->registerHook('paymentReturn'))
 			return false;
 		return true;
 	}
@@ -50,7 +50,7 @@ class OPinstanttransfer extends PaymentModule {
 	 */
 	public function uninstall() {
 		if (!Configuration :: deleteByName('OP_ITRANSFER_SUCCEED_STATES') OR !Configuration :: deleteByName('OP_ITRANSFER_FAIL_STATES') OR !Configuration :: deleteByName('OP_ITRANSFER_ACCOUNT') OR !Configuration :: deleteByName('OP_ITRANSFER_SECURECODE') OR !Configuration :: deleteByName('OP_ITRANSFER_TERMINAL') 
-		 OR !Configuration :: deleteByName('OP_ITRANSFER_HANDLER') OR !Configuration :: deleteByName('OP_ITRANSFER_BACK_URL') OR !parent :: uninstall())
+		 OR !Configuration :: deleteByName('OP_ITRANSFER_HANDLER') OR !Configuration :: deleteByName('OP_ITRANSFER_BACK_URL') OR !Configuration :: deleteByName('OP_ITRANSFER_WEIRE_LOG') OR !parent :: uninstall())
 			return false;
 		return true;
 	}
@@ -78,6 +78,7 @@ class OPinstanttransfer extends PaymentModule {
 				Configuration :: updateValue('OP_ITRANSFER_FAIL_STATES', strval($_POST['fail_states']));
 				Configuration :: updateValue('OP_ITRANSFER_HANDLER', strval($_POST['handler']));
 				Configuration :: updateValue('OP_ITRANSFER_BACK_URL', strval($_POST['backurl']));
+                		Configuration :: updateValue('OP_ITRANSFER_WEIRE_LOG', strval($_POST['logs']));
 				$this->displayConf();
 			} else
 				$this->displayErrors();
@@ -146,7 +147,8 @@ class OPinstanttransfer extends PaymentModule {
 			'OP_ITRANSFER_SUCCEED_STATES',
 			'OP_ITRANSFER_FAIL_STATES',
 			'OP_ITRANSFER_HANDLER',
-			'OP_ITRANSFER_BACK_URL'
+			'OP_ITRANSFER_BACK_URL',
+            		'OP_ITRANSFER_WEIRE_LOG'
 		));
 		$account = array_key_exists('account', $_POST) ? $_POST['account'] : (array_key_exists('OP_ITRANSFER_ACCOUNT', $conf) ? $conf['OP_ITRANSFER_ACCOUNT'] : '');
 		$securecode = array_key_exists('securecode', $_POST) ? $_POST['securecode'] : (array_key_exists('OP_ITRANSFER_SECURECODE', $conf) ? $conf['OP_ITRANSFER_SECURECODE'] : '');
@@ -155,17 +157,20 @@ class OPinstanttransfer extends PaymentModule {
 		$fail_states = array_key_exists('fail_states', $_POST) ? $_POST['fail_states'] : (array_key_exists('OP_ITRANSFER_FAIL_STATES', $conf) ? $conf['OP_ITRANSFER_FAIL_STATES'] :6);
 		$handler = array_key_exists('handler', $_POST) ? $_POST['handler'] : (array_key_exists('OP_ITRANSFER_HANDLER', $conf) ? $conf['OP_ITRANSFER_HANDLER'] : '');
 		$backurl = array_key_exists('backurl', $_POST) ? $_POST['backurl'] : (array_key_exists('OP_ITRANSFER_BACK_URL', $conf) ? $conf['OP_ITRANSFER_BACK_URL'] : '');
-
+		$logs_mode = array_key_exists('logs', $_POST) ? $_POST['logs'] : (array_key_exists('OP_ITRANSFER_WEIRE_LOG', $conf) ? $conf['OP_ITRANSFER_WEIRE_LOG'] : 1);
+		
 		$statesArray = array();
 		$states = OrderState::getOrderStates((int)($cookie->id_lang));
 		$succeed_states_string = '';
 		$fail_states_string = '';
+        	$logs_modes = array(1 => 'On', 0 => 'Off');
 		
 		foreach ($states AS $state)
 			$succeed_states_string .= "<option value='".$state['id_order_state']."' ".($succeed_states==$state['id_order_state']?"selected='selected'":"").">".$state['name']."</option>";
 		foreach ($states AS $state)
 			$fail_states_string .= "<option value='".$state['id_order_state']."' ".($fail_states==$state['id_order_state']?"selected='selected'":"").">".$state['name']."</option>";
-		
+		foreach ($logs_modes AS $val => $mode)
+            		$write_logs_string .= "<option value='".$val."' ".($logs_mode==$val?"selected='selected'":"").">".$mode."</option>";
 		$this->_html .= '<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" style="clear: both;"><fieldset><legend><img src="../img/admin/contact.gif" />'
 		. $this->l('Settings')
 		. '</legend><label>'
@@ -197,6 +202,8 @@ class OPinstanttransfer extends PaymentModule {
 		. '</label><div class="margin-form"><input type="text" size="82" name="backurl" value="'
 		. htmlentities($backurl, ENT_COMPAT, 'UTF-8')
 		. '" /></div>'
+		. '<label>'. $this->l('Write The Logs') . '</label>'
+        	. '<div class="margin-form"><select name="logs">'. $write_logs_string . '</select></div>'
 		. '<br /><center><input type="submit" name="submitOceanpayment" value="'
 		. $this->l('Update settings')
 		. '" class="btn" /></center></fieldset></form><br /><br />';
