@@ -48,7 +48,7 @@ $response_type = $_REQUEST['response_type'];
 $getErrorCode = explode(':', $payment_details);
 $ErrorCode = $getErrorCode[0];
 
-if(Configuration :: get('OP_GIROPAY_WEIRE_LOG')) {
+if(Configuration :: get('OP_GIROPAY_WRITE_LOG')) {
 	$logType = '[Browser Return]';
 
 
