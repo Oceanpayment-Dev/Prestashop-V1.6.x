@@ -52,7 +52,7 @@ class OPcreditcard extends PaymentModule {
 			!Configuration :: updateValue('OP_CREDITCARD_SECURE_AMOUNT', '') OR
 			!Configuration :: updateValue('OP_CREDITCARD_HANDLER', $action_URL) OR 
 			!Configuration :: updateValue('OP_CREDITCARD_BACK_URL', $back_url) OR 
-            		!Configuration :: updateValue('OP_CREDITCARD_WEIRE_LOG', '1') OR
+            		!Configuration :: updateValue('OP_CREDITCARD_WRITE_LOG', '1') OR
 			!parent :: install() OR
 			!$this->registerHook('payment') OR 
 			!$this->registerHook('paymentReturn'))
@@ -78,7 +78,7 @@ class OPcreditcard extends PaymentModule {
 			!Configuration :: deleteByName('OP_CREDITCARD_SECURE_AMOUNT') OR
 			!Configuration :: deleteByName('OP_CREDITCARD_HANDLER') OR 
 			!Configuration :: deleteByName('OP_CREDITCARD_BACK_URL') OR 
-            		!Configuration :: deleteByName('OP_CREDITCARD_WEIRE_LOG') OR
+            		!Configuration :: deleteByName('OP_CREDITCARD_WRITE_LOG') OR
 			!parent :: uninstall())
 			return false;
 		return true;
@@ -154,7 +154,7 @@ class OPcreditcard extends PaymentModule {
 				Configuration :: updateValue('OP_CREDITCARD_SECURE_AMOUNT', strval($_POST['secure_amount']));
 				Configuration :: updateValue('OP_CREDITCARD_HANDLER', strval($_POST['handler']));
 				Configuration :: updateValue('OP_CREDITCARD_BACK_URL', strval($_POST['backurl']));
-				Configuration :: updateValue('OP_CREDITCARD_WEIRE_LOG', strval($_POST['logs']));
+				Configuration :: updateValue('OP_CREDITCARD_WRITE_LOG', strval($_POST['logs']));
 				$this->displayConf();
 			} else
 				$this->displayErrors();
@@ -195,7 +195,7 @@ class OPcreditcard extends PaymentModule {
 			'OP_CREDITCARD_SECURE_AMOUNT',
 			'OP_CREDITCARD_HANDLER',
 			'OP_CREDITCARD_BACK_URL',
-            		'OP_CREDITCARD_WEIRE_LOG'
+            		'OP_CREDITCARD_WRITE_LOG'
 		));
 		$account = array_key_exists('account', $_POST) ? $_POST['account'] : (array_key_exists('OP_CREDITCARD_ACCOUNT', $conf) ? $conf['OP_CREDITCARD_ACCOUNT'] : '');
 		$securecode = array_key_exists('securecode', $_POST) ? $_POST['securecode'] : (array_key_exists('OP_CREDITCARD_SECURECODE', $conf) ? $conf['OP_CREDITCARD_SECURECODE'] : '');
@@ -211,7 +211,7 @@ class OPcreditcard extends PaymentModule {
 		$secure_amount = array_key_exists('secure_amount', $_POST) ? $_POST['secure_amount'] : (array_key_exists('OP_CREDITCARD_SECURE_AMOUNT', $conf) ? $conf['OP_CREDITCARD_SECURE_AMOUNT'] : '');
 		$handler = array_key_exists('handler', $_POST) ? $_POST['handler'] : (array_key_exists('OP_CREDITCARD_HANDLER', $conf) ? $conf['OP_CREDITCARD_HANDLER'] : '');
 		$backurl = array_key_exists('backurl', $_POST) ? $_POST['backurl'] : (array_key_exists('OP_CREDITCARD_BACK_URL', $conf) ? $conf['OP_CREDITCARD_BACK_URL'] : '');
-		$logs_mode = array_key_exists('logs', $_POST) ? $_POST['logs'] : (array_key_exists('OP_CREDITCARD_WEIRE_LOG', $conf) ? $conf['OP_CREDITCARD_WEIRE_LOG'] : 1);
+		$logs_mode = array_key_exists('logs', $_POST) ? $_POST['logs'] : (array_key_exists('OP_CREDITCARD_WRITE_LOG', $conf) ? $conf['OP_CREDITCARD_WRITE_LOG'] : 1);
 		
 		$statesArray = array();
 		$states = OrderState::getOrderStates((int)($cookie->id_lang));
