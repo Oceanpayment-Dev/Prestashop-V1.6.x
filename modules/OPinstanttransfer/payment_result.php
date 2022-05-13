@@ -47,7 +47,7 @@ $response_type = $_REQUEST['response_type'];
 //用于支付结果页面显示响应代码
 $getErrorCode = explode(':', $payment_details);
 $ErrorCode = $getErrorCode[0];
-if(Configuration :: get('OP_ITRANSFER_WEIRE_LOG')) {
+if(Configuration :: get('OP_ITRANSFER_WRITE_LOG')) {
 	$logType = '[Browser Return]';
 
 
