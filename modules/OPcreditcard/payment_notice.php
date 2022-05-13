@@ -47,35 +47,35 @@ if(xml_parser($xml_str)){
 
 //交易推送
 if($_REQUEST['response_type'] == 1){
-	
-	$logType = "[PUSH]";
-	
-	$filedate   = date('Y-m-d');
-	$returndate = date('Y-m-d H:i:s');
-	$newfile    = fopen( "oceanpayment_log/" . $filedate . ".log", "a+" );
-	$return_log = $returndate . $logType . "\r\n".
-			"response_type = "       . $_REQUEST['response_type'] . "\r\n".
-			"account = "             . $_REQUEST['account'] . "\r\n".
-			"terminal = "            . $_REQUEST['terminal'] . "\r\n".
-			"payment_id = "          . $_REQUEST['payment_id'] . "\r\n".
-			"order_number = "        . $_REQUEST['order_number'] . "\r\n".
-			"order_currency = "      . $_REQUEST['order_currency'] . "\r\n".
-			"order_amount = "        . $_REQUEST['order_amount'] . "\r\n".
-			"payment_status = "      . $_REQUEST['payment_status'] . "\r\n".
-			"payment_details = "     . $_REQUEST['payment_details'] . "\r\n".
-			"signValue = "           . $_REQUEST['signValue'] . "\r\n".
-			"order_notes = "         . $_REQUEST['order_notes'] . "\r\n".
-			"card_number = "         . $_REQUEST['card_number'] . "\r\n".
-			"payment_authType = "    . $_REQUEST['payment_authType'] . "\r\n".
-			"payment_risk = "        . $_REQUEST['payment_risk'] . "\r\n";
-	
-	$return_log = $return_log . "*************************************\r\n";
-	$return_log = $return_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
-	$filename   = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
-	fwrite($filename,$return_log);
-	fclose($filename);
-	fclose($newfile);
-	
+	 if(Configuration :: get('OP_CREDITCARD_WEIRE_LOG')) {
+		$logType = "[PUSH]";
+
+		$filedate   = date('Y-m-d');
+		$returndate = date('Y-m-d H:i:s');
+		$newfile    = fopen( "oceanpayment_log/" . $filedate . ".log", "a+" );
+		$return_log = $returndate . $logType . "\r\n".
+				"response_type = "       . $_REQUEST['response_type'] . "\r\n".
+				"account = "             . $_REQUEST['account'] . "\r\n".
+				"terminal = "            . $_REQUEST['terminal'] . "\r\n".
+				"payment_id = "          . $_REQUEST['payment_id'] . "\r\n".
+				"order_number = "        . $_REQUEST['order_number'] . "\r\n".
+				"order_currency = "      . $_REQUEST['order_currency'] . "\r\n".
+				"order_amount = "        . $_REQUEST['order_amount'] . "\r\n".
+				"payment_status = "      . $_REQUEST['payment_status'] . "\r\n".
+				"payment_details = "     . $_REQUEST['payment_details'] . "\r\n".
+				"signValue = "           . $_REQUEST['signValue'] . "\r\n".
+				"order_notes = "         . $_REQUEST['order_notes'] . "\r\n".
+				"card_number = "         . $_REQUEST['card_number'] . "\r\n".
+				"payment_authType = "    . $_REQUEST['payment_authType'] . "\r\n".
+				"payment_risk = "        . $_REQUEST['payment_risk'] . "\r\n";
+
+		$return_log = $return_log . "*************************************\r\n";
+		$return_log = $return_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
+		$filename   = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
+		fwrite($filename,$return_log);
+		fclose($filename);
+		fclose($newfile);
+	 }
 	
 	//签名数据
 	$local_signValue = hash("sha256",$_REQUEST['account'].$_REQUEST['terminal'].$_REQUEST['order_number'].$_REQUEST['order_currency'].$_REQUEST['order_amount'].$_REQUEST['order_notes'].$_REQUEST['card_number'].
