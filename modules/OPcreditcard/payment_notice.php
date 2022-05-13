@@ -47,7 +47,7 @@ if(xml_parser($xml_str)){
 
 //交易推送
 if($_REQUEST['response_type'] == 1){
-	 if(Configuration :: get('OP_CREDITCARD_WEIRE_LOG')) {
+	 if(Configuration :: get('OP_CREDITCARD_WRITE_LOG')) {
 		$logType = "[PUSH]";
 
 		$filedate   = date('Y-m-d');
