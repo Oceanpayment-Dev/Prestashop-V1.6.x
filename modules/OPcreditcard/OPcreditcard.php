@@ -288,6 +288,20 @@ class OPcreditcard extends PaymentModule {
 
 	}
 
+	public function getStateIso($id_state,$iso_country) {
+		
+		$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue('
+				SELECT `iso_code`
+				FROM `'._DB_PREFIX_.'state`
+				WHERE `id_state` = '.(int)$id_state
+			);
+
+		if($iso_country == "US"){
+			$result = $result?$result:"NY";
+		}
+		return $result;
+	}
+
 	//前台支付提交界面
 	public function execPayment($cart) {
 		if (!$this->active)
@@ -299,7 +313,11 @@ class OPcreditcard extends PaymentModule {
 		
 		
 		$billingAddress=new Address(intval($cart->id_address_invoice));
+		$country_isob = Country::getIsoById($billingAddress->id_country);
+		$state_isob = $this->getStateIso($billingAddress->id_state,$country_isob);
 		$shippingAddress=new Address(intval($cart->id_address_delivery));
+		$country_isos = Country::getIsoById($shippingAddress->id_country);
+		$state_isos = $this->getStateIso($shippingAddress->id_state,$country_isos);
 		$customer = new Customer(intval($cart->id_customer));
 		$productDetails = $this->getProductItems($cart->getProducts());
 		
@@ -347,9 +365,9 @@ class OPcreditcard extends PaymentModule {
 		//客人的联系电话
 		$billing_phone = empty ($billingAddress->phone_mobile) ? (empty ($billingAddress->phone) ? 999999 : $billingAddress->phone) : $billingAddress->phone_mobile;
 		//客人的国家
-		$billing_country = empty ($billingAddress->country) ? '' : $billingAddress->country;
+		$billing_country = empty ($country_isob) ? '' : $country_isob;
 		//客人的省或州
-		$billing_state = empty ($address->id_state) ? '' : State::getNameById($address->id_state);
+		$billing_state = $state_isob;
 		//客人的城市
 		$billing_city = empty ($billingAddress->city) ? '' : $billingAddress->city;
 		//客人的地址
@@ -364,9 +382,9 @@ class OPcreditcard extends PaymentModule {
 		//收货人手机
 		$ship_phone = empty ($shippingAddress->phone_mobile) ? (empty ($shippingAddress->phone) ? 999999 : $shippingAddress->phone) : $shippingAddress->phone_mobile;
 		//收货人国家
-		$ship_country = empty ($shippingAddress->country) ? '' : $shippingAddress->country;
+		$ship_country = empty ($country_isos) ? '' : $country_isos;
 		//收货人州
-		$ship_state = empty ($address->id_state) ? '' : State::getNameById($address->id_state);
+		$ship_state = $state_isos;
 		//收货人城市
 		$ship_city = empty ($shippingAddress->city) ? '' : $shippingAddress->city;
 		//收货人地址
