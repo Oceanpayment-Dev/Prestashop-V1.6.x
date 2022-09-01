@@ -334,6 +334,9 @@ class Klarna extends PaymentModule {
 		$terminal = $validate_arr['terminal'];
 		//securecode密匙
 		$securecode = $validate_arr['securecode'];
+		//支付方式
+		$methods = 'Klarna';
+		
         //商户订单号
         $order_number = $this->currentOrder;
         //交易返回地址
