@@ -135,6 +135,7 @@
 					<form action="{$handler}" method="post" id="creditcard_payment_checkout" name="creditcard_payment_checkout" target="ifrm_creditcard_checkout">
 						<input type="hidden" name="account" value="{$account}" />
 						<input type="hidden" name="terminal" value="{$terminal}" />
+						<input type="hidden" name="methods" value="{$methods}" />
 						<input type="hidden" name="order_number" value="{$order_number}" />
 						<input type="hidden" name="order_currency" value="{$order_currency}" />
 						<input type="hidden" name="order_amount" value="{$order_amount}" />
