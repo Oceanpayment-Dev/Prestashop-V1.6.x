@@ -357,9 +357,9 @@ class OPcreditcard extends PaymentModule {
 		//支付方式
 		$methods = 'Credit Card';
 		//客人的名
-		$billing_firstName = empty ($billingAddress->firstname) ? '' : $this->OceanHtmlSpecialChars($billingAddress->firstname);
+		$billing_firstName = empty ($billingAddress->firstname) ? '' : substr(urlencode($this->OceanHtmlSpecialChars($billingAddress->lastname)),0,50);
 		//客人的姓
-		$billing_lastName = empty ($billingAddress->lastname) ? '' : $this->OceanHtmlSpecialChars($billingAddress->lastname);
+		$billing_lastName = empty ($billingAddress->lastname) ? '' : substr(urlencode($this->OceanHtmlSpecialChars($billingAddress->lastname)),0,50);
 		//客人的邮件
 		$billing_email = empty ($customer->email) ? '' : $this->OceanHtmlSpecialChars($customer->email);
 		//客人的联系电话
@@ -376,9 +376,9 @@ class OPcreditcard extends PaymentModule {
 		$billing_zip = empty ($billingAddress->postcode) ? 999999 : $billingAddress->postcode;
 		//收货人地址信息
 		//收货人名
-		$ship_firstName = empty ($shippingAddress->firstname) ? '' : $this->OceanHtmlSpecialChars($shippingAddress->firstname);
+		$ship_firstName = empty ($shippingAddress->firstname) ? '' : substr(urlencode($this->OceanHtmlSpecialChars($shippingAddress->firstname)),0,50);
 		//收货人姓
-		$ship_lastName = empty ($shippingAddress->lastname) ? '' : $this->OceanHtmlSpecialChars($shippingAddress->lastname);
+		$ship_lastName = empty ($shippingAddress->lastname) ? '' : substr(urlencode($this->OceanHtmlSpecialChars($shippingAddress->lastname)),0,50);
 		//收货人手机
 		$ship_phone = empty ($shippingAddress->phone_mobile) ? (empty ($shippingAddress->phone) ? 999999 : $shippingAddress->phone) : $shippingAddress->phone_mobile;
 		//收货人国家
