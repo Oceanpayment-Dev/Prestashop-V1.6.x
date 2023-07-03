@@ -36,7 +36,7 @@ class OPcreditcard extends PaymentModule {
 		//支付地址(正式)
         $this->_makeOrderState();
 		$action_URL="https://secure.oceanpayment.com/gateway/service/test";
-		$back_url='http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPcreditcard/payment_result.php';
+		$back_url= $this->getScheme() . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPcreditcard/payment_result.php';
 
 		if (!Configuration :: updateValue('OP_CREDITCARD_SUCCEED_STATES', '2') OR
 			!Configuration :: updateValue('OP_CREDITCARD_FAIL_STATES', '6') OR 
@@ -351,7 +351,7 @@ class OPcreditcard extends PaymentModule {
         //交易返回地址
         $backUrl = Configuration :: get('OP_CREDITCARD_BACK_URL');
         //服务器响应地址
-        $noticeUrl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPcreditcard/payment_notice.php';
+        $noticeUrl = $this->getScheme() . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__.'modules/OPcreditcard/payment_notice.php';
         //备注
         $order_notes = '';
 		//支付方式
@@ -525,7 +525,7 @@ class OPcreditcard extends PaymentModule {
 
 		global $smarty;
 
-		$this_path_ssl = 'http://' . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'modules/OPcreditcard/';
+		$this_path_ssl = $this->getScheme() . htmlspecialchars($_SERVER['HTTP_HOST'], ENT_COMPAT, 'UTF-8') . __PS_BASE_URI__ . 'modules/OPcreditcard/';
 
 		$smarty->assign(array (
 			'this_path_ssl' => $this_path_ssl
@@ -660,6 +660,18 @@ class OPcreditcard extends PaymentModule {
 	
 		return $parameter;
 	
+	}
+
+	function getScheme(){
+		if(isset($_SERVER['HTTP_X_CLIENT_SCHEME'])){
+			$scheme = $_SERVER['HTTP_X_CLIENT_SCHEME'] . '://';
+		}elseif(isset($_SERVER['REQUEST_SCHEME'])){
+			$scheme = $_SERVER['REQUEST_SCHEME'] . '://';
+		}else{
+			$scheme = 'http://';
+		}
+		
+		return $scheme;
 	}
 	
 }
